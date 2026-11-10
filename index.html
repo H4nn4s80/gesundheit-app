@@ -456,7 +456,7 @@ main{max-width:740px;margin:auto;padding:max(12px,env(safe-area-inset-top)) 16px
  @media(prefers-color-scheme:dark){.cmpRow{background-color:rgba(22,26,36,.97)!important}}
 }
 
-/* Build 8.5: Connect-Layout + deutlicheres Liquid Glass (glass2) */
+/* Build 8.6: Connect-Layout + deutlicheres Liquid Glass (glass2) */
 :root{
   --bg:#f7f8fb; --text:#12141a; --muted:#2c2c33; --dim:#5a5a64;
   --accent:#007AFF; --accent-fill:#007AFF;
@@ -889,9 +889,244 @@ main{max-width:740px;margin:auto;padding:0 0 calc(128px + var(--safe-bottom))!im
     -webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%)
   }
 }
+
+
+/* Build 8.6 settings: heading outside, closed glass cards, no clipped help */
+#settings{
+  padding-top:max(12px,env(safe-area-inset-top,0px))!important;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  scroll-padding-top:max(12px,env(safe-area-inset-top,0px));
+}
+#settings > h1{margin:4px 0 16px!important;line-height:1.3}
+#settings.healthSettings .panel,
+#settings .panel{
+  background:transparent!important;
+  background-image:none!important;
+  background-color:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+  padding:0!important;
+  margin:22px 0 8px!important;
+  overflow:visible!important;
+  isolation:auto!important;
+  position:static!important
+}
+#settings .panel::before,
+#settings.healthSettings .panel::before{content:none!important;display:none!important;background:none!important}
+
+#settings .panel>h2,
+#settings.healthSettings .panel>h2{
+  font-size:13px!important;
+  font-weight:600!important;
+  color:var(--muted)!important;
+  text-transform:uppercase!important;
+  letter-spacing:.4px!important;
+  margin:0 8px 8px!important;
+  padding:0!important;
+  line-height:1.3!important;
+  background:none!important;
+  border:0!important;
+  box-shadow:none!important
+}
+
+#settings .panel>p,
+#settings .panel>.notice,
+#settings.healthSettings .panel>p,
+#settings.healthSettings .panel>.notice{
+  font-size:13px!important;
+  line-height:1.45!important;
+  color:var(--muted)!important;
+  margin:8px 8px 10px!important;
+  padding:0!important;
+  max-height:none!important;
+  height:auto!important;
+  overflow:visible!important;
+  -webkit-line-clamp:unset!important;
+  display:block!important;
+  background:none!important;
+  border:0!important;
+  box-shadow:none!important
+}
+
+#settings .iosGroup,
+#settings.healthSettings .iosGroup,
+#settings code,
+#settings #homeEditor,
+#settings .toggleRow,
+#settings .gcFieldCard{
+  display:block;
+  position:relative;
+  z-index:1;
+  overflow:hidden;
+  margin:0 0 10px!important;
+  border-radius:var(--radius)!important;
+  background:var(--glass)!important;
+  background-image:
+    linear-gradient(135deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,.10) 36%,transparent 62%),
+    linear-gradient(var(--glass),var(--glass))!important;
+  border:1px solid var(--edge-lo)!important;
+  border-top-color:var(--edge)!important;
+  border-left-color:var(--edge)!important;
+  box-shadow:var(--shadow)!important;
+  -webkit-backdrop-filter:var(--blur)!important;
+  backdrop-filter:var(--blur)!important
+}
+#settings .iosGroup{padding:0!important}
+#settings .iosGroup button,
+#settings .iosGroup .primary,
+#settings .iosGroup .softButton{
+  width:100%;
+  margin:0!important;
+  margin-bottom:0!important;
+  border-radius:0!important;
+  border:0!important;
+  border-bottom:1px solid var(--line)!important;
+  box-shadow:none!important;
+  background:transparent!important
+}
+#settings .iosGroup button:last-child{border-bottom:0!important}
+
+#settings .toggleRow{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+  padding:14px 16px!important;
+  box-sizing:border-box!important;
+  width:100%!important;
+  overflow:hidden!important
+}
+#settings .toggleRow>span{min-width:0;flex:1}
+#settings .toggleRow strong{display:block;font-size:16px;font-weight:650;color:var(--text);line-height:1.3}
+#settings .toggleRow small{display:block;margin-top:3px;line-height:1.35;white-space:normal}
+
+#settings code{
+  display:block!important;
+  padding:12px 14px!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  font-size:13px!important;
+  word-break:break-all!important;
+  max-height:none!important
+}
+
+#settings #homeEditor{padding:2px 4px 2px 8px!important}
+#settings .homeEditorRow{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:8px!important;
+  min-height:52px!important;
+  height:auto!important;
+  padding:8px 6px!important;
+  margin:0!important;
+  position:relative!important;
+  z-index:2!important;
+  border-bottom:1px solid var(--line)!important;
+  flex-wrap:nowrap!important;
+  background:transparent!important;
+  overflow:visible!important
+}
+#settings .homeEditorRow:last-child{border-bottom:0!important}
+#settings .homeEditorRow label{
+  flex:1 1 auto!important;
+  min-width:0!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  font-size:16px!important
+}
+#settings .homeEditorRow>div{display:flex!important;gap:6px!important;flex:0 0 auto!important}
+#settings .homeEditorRow button,
+#settings .homeEditorRow button.softButton,
+#settings .homeEditorRow button.glassAction{
+  margin:0!important;
+  margin-bottom:0!important;
+  min-width:40px!important;
+  min-height:36px!important;
+  padding:6px 10px!important;
+  position:relative!important;
+  z-index:2!important;
+  flex:0 0 auto!important;
+  border-radius:12px!important;
+  background:var(--glass-pill)!important;
+  border:1px solid var(--edge-lo)!important;
+  box-shadow:inset 0 1px 0 var(--shine)!important;
+  color:var(--accent)!important;
+  opacity:1!important
+}
+#settings .homeEditorRow button:disabled{opacity:.38!important}
+
+#settings .gcFieldCard{padding:10px 14px 12px!important}
+#settings .gcFieldCard label{display:block;margin:0 0 8px;font-size:15px;color:var(--text)}
+#settings .gcFieldCard select,
+#settings #autoLockMinutes{
+  width:100%!important;
+  margin:0!important;
+  box-sizing:border-box!important
+}
+
+#settings details{margin:0 0 10px}
+#settings details>summary{list-style:none}
+
+#changePin,#pinPad,#pinInput,#pinContinue{display:none!important}
+#pinScreen .pinPad,#pinScreen .pinInput{display:none!important}
+
+/* Safe-area + tab clearance on all pages */
+#detail,#activitiesView,#activityDetail,#browseView,#trendsView,#bodyView,
+#periodCompareView,#compareView,#compactView,.gcPage,#gcHealthHub,#gcPerfHub,#gcActsHub{
+  padding-top:max(12px,env(safe-area-inset-top,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-bottom:calc(128px + var(--safe-bottom))!important;
+  scroll-padding-top:max(12px,env(safe-area-inset-top,0px))
+}
+#overview.gcHome,#gcMeinTag{padding-top:max(6px,env(safe-area-inset-top,0px))}
+#auth.lock{padding:max(28px,env(safe-area-inset-top,0px)) 22px calc(28px + var(--safe-bottom))!important;overflow:visible}
+#auth.lock p,#auth.lock .notice,#auth.lock .sub{max-height:none!important;overflow:visible!important;height:auto!important}
+
+@media(prefers-color-scheme:dark){
+  #settings .iosGroup,
+  #settings.healthSettings .iosGroup,
+  #settings code,
+  #settings #homeEditor,
+  #settings .toggleRow,
+  #settings .gcFieldCard{
+    background-image:linear-gradient(135deg,rgba(255,255,255,.16) 0%,transparent 46%),linear-gradient(var(--glass),var(--glass))!important
+  }
+}
+@media (prefers-color-scheme: light){
+  #settings .iosGroup,
+  #settings.healthSettings .iosGroup,
+  #settings code,
+  #settings #homeEditor,
+  #settings .toggleRow,
+  #settings .gcFieldCard{
+    border:1px solid transparent!important;
+    background-image:
+      linear-gradient(135deg,rgba(255,255,255,.70) 0%,rgba(255,255,255,.14) 32%,transparent 58%),
+      linear-gradient(var(--glass),var(--glass)),
+      linear-gradient(135deg,rgba(255,255,255,.98) 0%,rgba(255,255,255,.55) 42%,rgba(150,160,185,.32) 100%)!important;
+    background-origin:padding-box,padding-box,border-box!important;
+    background-clip:padding-box,padding-box,border-box!important
+  }
+}
+
+#settings #faceMessage:empty,
+#settings #homeMessage:empty,
+#settings #autoLockMessage:empty,
+#settings .notice:empty{display:none!important;margin:0!important;padding:0!important;border:0!important;min-height:0!important;height:0!important}
+#settings .iosGroup:empty,
+#settings .iosGroup.gcEmptyGroup{display:none!important;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important;min-height:0!important;height:0!important;background:none!important}
 </style><main><section id="auth" class="lock"><div class="lock-icon" aria-hidden="true">♥</div><div class="eyebrow">Privat &amp; verschlüsselt</div><h1>Deine Gesundheit</h1><p class="sub">Entsperre deine Übersicht mit deinem Passwort. Deine Messwerte bleiben verschlüsselt gespeichert.</p><form id="unlockForm"><label for="password">Passwort</label><input class="field" id="password" type="password" autocomplete="current-password" required><p class="notice">Beim ersten Öffnen brauchst du das Passwort. Danach bleibt der Zugang auf diesem Gerät gespeichert.</p><button class="primary" id="unlock" type="submit">Entsperren</button><p id="authError" role="alert"></p></form><p class="notice">Auf gemeinsamen Geräten bitte abmelden. Ohne Passwort können die Daten nach dem Abmelden nicht wiederhergestellt werden.</p></section><section id="pinScreen" class="lock pinScreen hidden" aria-label="PIN-Eingabe"><div class="eyebrow">Dein lokaler Zugang</div><h1 id="pinTitle">PIN festlegen</h1><p id="pinHelp" class="sub"></p><input id="pinInput" class="pinInput" type="password" inputmode="none" readonly maxlength="8" autocomplete="off" aria-label="PIN, 4 bis 8 Ziffern"><div id="pinPad" class="pinPad"><button class="pinKey" type="button" data-digit="1" aria-label="Ziffer 1">1</button><button class="pinKey" type="button" data-digit="2" aria-label="Ziffer 2">2</button><button class="pinKey" type="button" data-digit="3" aria-label="Ziffer 3">3</button><button class="pinKey" type="button" data-digit="4" aria-label="Ziffer 4">4</button><button class="pinKey" type="button" data-digit="5" aria-label="Ziffer 5">5</button><button class="pinKey" type="button" data-digit="6" aria-label="Ziffer 6">6</button><button class="pinKey" type="button" data-digit="7" aria-label="Ziffer 7">7</button><button class="pinKey" type="button" data-digit="8" aria-label="Ziffer 8">8</button><button class="pinKey" type="button" data-digit="9" aria-label="Ziffer 9">9</button><span></span><button class="pinKey" type="button" data-digit="0" aria-label="Ziffer 0">0</button><button class="pinKey" id="pinDelete" type="button" aria-label="Letzte Ziffer löschen">⌫</button></div><button id="pinContinue" class="primary" type="button">Weiter</button><button id="faceUnlock" class="faceButton hidden" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M9 9v1.5M15 9v1.5M12 9v4h-1M9.5 16a4 4 0 0 0 5 0"/></svg><span>Mit Face ID entsperren</span></button><p id="pinError" role="alert" aria-live="polite"></p><button id="pinRestart" class="textButton hidden" type="button">Neu beginnen</button><button id="pinUsePassword" class="textButton" type="button">Zur Passwortabfrage</button><p class="pinHint">Abmelden entfernt den gespeicherten Schlüssel. Das Datenpasswort bleibt unverändert.</p></section><div id="app" class="hidden"><nav class="toolbar" aria-label="Hauptnavigation" role="tablist"><button id="summaryButton" role="tab" aria-selected="true" aria-controls="overview"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h4l2-7 4 13 2-6h4"/></svg><span>Zusammenfassung</span></button><button id="activitiesButton" role="tab" aria-selected="false" aria-controls="activitiesView"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="14" cy="4" r="2"/><path d="m7 9 4-2 4 5 5 1M12 9l-3 7-5 4m7-6 5 3 1 4"/></svg><span>Aktivitäten</span></button><button id="settingsButton" role="tab" aria-selected="false" aria-controls="settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="2"/><circle cx="15" cy="12" r="2"/><circle cx="9" cy="18" r="2"/></svg><span>Einstellungen</span></button></nav><div id="statusLine" role="status"></div><section id="overview"><div class="eyebrow">Dein privater Überblick</div><h1>Heute</h1><p class="sub">Dein Tag. Dein Tempo.</p><section id="todayCard" class="panel"></section><section class="panel"><h2>Deine Tagesziele</h2><div id="goalRings"></div><details><summary>Ringziele anpassen</summary><form id="ringForm"><div class="ringFormGrid"><label>Schritte pro Tag<input id="ring-steps" class="field" type="number" min="1" max="100000" required></label><label>Schlaf pro Nacht (Stunden)<input id="ring-sleep" class="field" type="number" min="0.1" max="24" step="0.1" required></label><label>Intensitätsminuten pro Tag<input id="ring-intensity" class="field" type="number" min="1" max="1440" required></label></div><button class="primary">Ringziele speichern</button><p id="ringMessage" role="status"></p></form></details><p class="notice">Startziele: 8.000 Schritte, 8 Stunden Schlaf, 30 Intensitätsminuten (moderat + intensiv, ohne Doppelgewichtung). Frei wählbar, keine medizinische Empfehlung.</p></section><section id="weeklyReview" class="panel"></section><section class="panel"><h2>Zusammenhänge</h2><div id="insightRows"></div><details id="relationshipMethod"><summary>Was zeigen die Zusammenhänge?</summary><p class="notice">Letzte 90 Kalendertage, mindestens 20 gemeinsame Tage. Schlaf und Tageswerte am gleichen Datum. Zusammenhang bedeutet keine Ursache; Alltag, Training und Messfehler können mitwirken. r reicht von −1 (gegenläufig) über 0 (kein linearer Zusammenhang) bis +1 (gleichläufig). Die Farbe zeigt die Stärke, nicht ob ein Wert gesund ist. Ab |r| = 0,2 schwach, 0,4 mittel, 0,6 stark. Bei konstanten Werten ist r nicht berechenbar.</p></details></section><section id="bodySection" class="panel"><h2>Körperzusammensetzung</h2><div id="bodyCards" class="bodyGrid"></div><p class="notice">Jeweils letzter verfügbarer Waagenwert; Messdaten können von unterschiedlichen Tagen stammen. Trends sind neutral: Mehr oder weniger ist nicht automatisch besser. Körperfett, Muskelmasse, Wasser und Knochenmasse sind Waagenschätzungen, keine unabhängigen Anteile zum Addieren.</p></section><h2>Highlights</h2><div class="hlGrid" id="highlights" role="list"></div><div class="sectionHeading"><h2>Favoriten</h2><button id="editFavorites" class="textButton">Bearbeiten</button></div><div id="favoritesEditor" class="panel hidden"></div><p id="favoritesEmpty" class="notice hidden">Wähle deine Favoriten über Bearbeiten.</p><div class="cards" id="favoritesCards"></div><div id="groups"></div><details><summary>Daten &amp; Datenschutz</summary><p class="notice" id="about"></p></details><p class="notice">Privat · offline · ohne externe Dienste<br>Keine Diagnose oder medizinische Beratung.</p></section><section id="detail" class="hidden"><button class="back" id="back">‹ Zusammenfassung</button><div id="category" class="eyebrow"></div><h1 id="title"></h1><p id="source" class="sub"></p><div class="detailControls"><button id="favoriteDetail" class="softButton" aria-pressed="false">☆ Als Favorit</button><button id="compareButton" class="softButton">Vergleichen</button></div><details id="goalEditor" class="panel goalEditor"><summary>Ziel für diese Kennzahl</summary><form id="goalForm"><label for="goalValue">Zielwert</label><input id="goalValue" type="number" inputmode="decimal" step="any" min="0.001" class="field"><label for="goalDirection">Richtung</label><select id="goalDirection"><option value="min">Mindestens</option><option value="max">Höchstens</option><option value="target">Zielwert erreichen</option></select><button type="submit" class="primary">Ziel speichern</button><button id="removeGoal" type="button" class="softButton">Ziel entfernen</button><p id="goalMessage" role="status"></p><p class="notice">Nur auf diesem Gerät, keine medizinische Empfehlung.</p></form></details><div class="segments" aria-label="Zeitraum"><button data-period="W" aria-label="Woche">W</button><button data-period="M" aria-label="Monat">M</button><button data-period="Q" aria-label="90 Tage">90 T</button><button data-period="J" aria-label="Jahr">J</button></div><button class="softButton" id="smoothToggle" aria-pressed="true">7-Tage-Schnitt</button><p class="notice" id="smoothNote"></p><div class="nav"><button id="prev" aria-label="Vorheriger Zeitraum">‹</button><span class="range" id="range"></span><button id="next" aria-label="Nächster Zeitraum">›</button></div><div class="panel"><div id="selection" class="selected" aria-live="polite">Diagramm antippen</div><svg id="chart" class="chart" viewBox="0 0 340 220" role="img" aria-label="Verlauf; Einzelwerte stehen auch in der Liste"></svg><p class="notice" id="coverage"></p></div><div class="panel stats" id="stats"></div><p class="notice" id="trendNote"></p><h2>Einzelwerte</h2><div class="panel" id="list"></div><p class="notice">Tageswerte, keine stündlichen Messungen. Fehlende Tage bleiben Lücken. Aktuelle Zeiträume sind eventuell unvollständig.</p></section><section id="activitiesView" class="hidden"><button class="back" id="activitiesBack">‹ Zusammenfassung</button><h1>Aktivitäten</h1><p class="sub" id="activitiesSub">Dein Training im Verlauf</p><div class="segments" aria-label="Aktivitäten-Seiten"><button type="button" data-apage="0" aria-pressed="true">Einheiten</button><button type="button" data-apage="1" aria-pressed="false">Trainingsstatus</button></div><div class="pageDots" aria-hidden="true"><span class="on"></span><span></span></div><div class="pager" id="activityPager"><div class="pages" id="activityPages"><div class="page" id="activitiesPage" aria-hidden="false"><label class="filterLabel" for="activityFilter">Sportart filtern</label><select id="activityFilter" class="field"></select><p id="activityCount" class="notice"></p><details class="panel"><summary>Bestwerte im gespeicherten Verlauf</summary><p class="notice">Je Sportart, nur aus den vorhandenen Aktivitäten. Keine bestätigten Lebenszeitrekorde oder Streckenrekorde.</p><div id="personalBests"></div></details><div id="activitiesList"></div></div><div class="page collapsed" id="trainingPage" aria-hidden="true"><div id="trainingRows"></div></div></div></div></section><section id="activityDetail" class="hidden"></section><section id="settings" class="hidden"><button class="back" id="settingsBack">‹ Zusammenfassung</button><h1>Einstellungen</h1><div class="panel"><h2>Privater Zugang</h2><p class="notice" id="rememberStatus"></p><button class="primary" id="changePin">PIN ändern</button><button class="primary" id="logout">Abmelden</button><p class="notice">Abmelden entfernt den gespeicherten Schlüssel von diesem Gerät. Das verschlüsselte Offline-Paket bleibt erhalten. Ein vergessenes Passwort kann hier nicht zurückgesetzt werden.</p></div><div class="panel"><h2>Kurzbefehle</h2><p>In Kurzbefehle: „URL“ hinzufügen, dann „URLs öffnen“.</p><code id="shortcutURL"></code><p class="notice">Öffnet eine kompakte Ansicht im Browser. Erst nach dem Entsperren werden Werte lokal entschlüsselt. Kein echtes iOS-Startbildschirm-Widget und kein öffentlicher JSON-Endpunkt. „Inhalte von URL abrufen“ liefert keine Gesundheitswerte.</p></div><div class="panel"><h2>Daten &amp; App</h2><p id="versionInfo"></p><button class="primary" id="refresh">Nach Aktualisierungen suchen</button><p class="notice">Neue Daten werden online geladen, offline wird der letzte verschlüsselte Stand verwendet. Bei einem neuen Passwort musst du erneut entsperren.</p></div><div class="panel hidden" id="facePanel"><h2>Face ID</h2><div class="toggleRow"><span><strong>Mit Face ID entsperren</strong><small id="faceStatus"></small></span><button type="button" id="faceToggle" class="switch" role="switch" aria-checked="false" aria-label="Face ID aktivieren"><span></span></button></div><button type="button" id="faceSetup" class="primary hidden">Face ID einrichten</button><p id="faceMessage" class="notice" role="status" aria-live="polite"></p><p class="notice">Face ID nutzt einen Passkey dieses Geräts. Der Datenschlüssel wird damit verschlüsselt, zusätzlich zum Geräte-Schlüssel. Der Geräte-Schlüssel bleibt die Standardentsperrung.</p></div></section><section id="compactView" class="hidden"><button id="compactBack" class="back">‹ Zusammenfassung</button><div id="compactContent" class="panel"></div></section><section id="compareView" class="hidden"><button id="compareBack" class="back">‹ Zur Kennzahl</button><h1>Vergleichen</h1><div class="panel compareSelectors"><label>Erste Kennzahl<select id="compareA"></select></label><label>Zweite Kennzahl<select id="compareB"></select></label></div><div class="segments" aria-label="Vergleichszeitraum"><button data-cperiod="W" aria-label="Woche">W</button><button data-cperiod="M" aria-label="Monat">M</button><button data-cperiod="Q" aria-label="90 Tage">90 T</button><button data-cperiod="J" aria-label="Jahr">J</button></div><div class="nav"><button id="comparePrev" aria-label="Vorheriger Vergleichszeitraum">‹</button><span id="compareRange" class="range"></span><button id="compareNext" aria-label="Nächster Vergleichszeitraum">›</button></div><div class="panel"><p id="compareLegend"></p><svg id="compareChart" class="chart" viewBox="0 0 340 220" role="img" aria-label="Zwei auf 0 bis 100 normierte Zeitreihen"></svg><p id="correlation"></p><p id="compareCount" class="notice"></p></div><h2>Gemeinsame Tageswerte</h2><div id="compareList" class="panel"></div></section></div></main>
 <script>
-const APP_VERSION='1.0', APP_BUILD=8.5;
+const APP_VERSION='1.0', APP_BUILD=8.6;
 let DATA=null;
 const colors={'Körpermaße':'var(--body-color)','Aktivität':'var(--activity-color)','Schlaf':'var(--sleep-color)','Herz':'var(--heart-color)'};
 const $=s=>document.querySelector(s), fmt=(n,u)=>formatNumber(n,u), date=s=>new Date(s+'T12:00:00'), iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`, label=s=>date(s).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'});
@@ -2088,7 +2323,7 @@ ensurePeriodCompareView();
  };
 })();
 
-/* Build 8.5: Geräte-Schlüssel ohne PIN. Passwort einmal, dann CryptoKey in IndexedDB. */
+/* Build 8.6: Geräte-Schlüssel ohne PIN. Passwort einmal, dann CryptoKey in IndexedDB. */
 const DEVICE_FORMAT='gesundheit-device-v1';
 function validDeviceRecord(r){
  try{return r?.format===DEVICE_FORMAT&&typeof r.id==='string'&&r.key instanceof CryptoKey&&r.key.type==='secret'&&r.key.extractable===false&&Object.keys(r).every(k=>['format','id','key'].includes(k))}catch{return false}
@@ -2196,10 +2431,10 @@ start=async function(){
     return;
    }
   }
-  if(validPinRecord(saved)){
-   // Migration: einmal PIN oder Passwort
-   showPin('unlock');
-   $('#pinHelp').textContent='Dein bisheriger PIN wird einmalig benötigt. Danach öffnet die App ohne PIN.';
+  if(typeof validPinRecord==='function'&&validPinRecord(saved)){
+   // Alter PIN-Datensatz: still verwerfen, nur Passwort verlangen – nie wieder PIN abfragen
+   try{await stored('delete')}catch{}
+   passwordScreen('Bitte dein Passwort eingeben. Der bisherige Gerätezugang wurde erneuert.');
    return;
   }
   if(saved){try{await stored('delete')}catch{}}
@@ -2369,7 +2604,7 @@ $('#logout').addEventListener('click',async ev=>{
  // original also binds – we ensure device clear
 },true);
 
-console.info('build8-5 auth: device key without PIN');
+
 
 
 // Auto-Sperre nur wirksam mit Face ID
@@ -2393,7 +2628,42 @@ try{
  if(al)al.textContent='Nur aktiv, wenn Face ID eingeschaltet ist. Ohne Face ID bleibt die App nach dem ersten Passwort offen; Abmelden löscht den Geräte-Schlüssel.';
 }catch{}
 
-/* Build 8.5: Connect-ähnliche Startseite + 5 Tabs, Liquid Glass, nur echte Daten. */
+
+// Build 8.6: niemals eine PIN-Tastatur zeigen
+(function(){
+  const orig=typeof showPin==='function'?showPin:null;
+  showPin=function(mode,message){
+    try{$('#pinScreen').classList.add('hidden');$('#pinPad')?.classList.add('hidden')}catch{}
+    const msg=(message&&!/\bPIN\b/i.test(message))?message:'Bitte Passwort eingeben.';
+    if(typeof passwordScreen==='function')passwordScreen(msg);
+  };
+  let cp=$('#changePin');
+  if(cp){
+    cp.classList.add('hidden');cp.disabled=true;cp.setAttribute('aria-hidden','true');cp.style.display='none';
+    cp.onclick=null;
+    cp.addEventListener('click',ev=>{ev.preventDefault();ev.stopImmediatePropagation();passwordScreen('Bitte Passwort eingeben.');},true);
+  }
+  const fm=typeof faceMessage==='function'?faceMessage:null;
+  if(fm){
+    faceMessage=function(text){
+      if(typeof text==='string'){
+        text=text
+          .replace(/oder deinen PIN verwenden/gi,'oder dein Passwort verwenden')
+          .replace(/mit deinem PIN/gi,'mit deinem Passwort')
+          .replace(/Dein PIN funktioniert weiter/gi,'Dein Passwort funktioniert weiter')
+          .replace(/der PIN bleibt als Alternative\.?/gi,'das Passwort bleibt als Alternative.')
+          .replace(/Entsperren nur mit PIN/gi,'Entsperren nur mit Passwort')
+          .replace(/PIN bestätigt/gi,'Passwort bestätigt')
+          .replace(/deinen PIN/gi,'dein Passwort')
+          .replace(/deinem PIN/gi,'deinem Passwort');
+      }
+      fm(text);
+    };
+  }
+})();
+console.info('build8-6 auth: device key, no PIN prompt');
+
+/* Build 8.6: Connect-ähnliche Startseite + 5 Tabs, Liquid Glass, nur echte Daten. */
 const GC={accent:'#007AFF',bb:'#2ea8e0',sleep:'#5B6CFF',deep:'#1E3A8A',rem:'#7B6CF0',light:'#93C5FD',stress:'#F5A524',hrv:'#34C759',act:'#E67E22',load:'#007AFF'};
 
 function gcI(name){
@@ -2877,6 +3147,57 @@ function wireGarminTabs(){
  [home,health,perf,acts,more].forEach(b=>tb.append(b));
 }
 
+
+function styleSettingsCards(){
+ let s=$('#settings');if(!s)return;
+ s.classList.add('healthSettings');
+ s.querySelectorAll('.panel').forEach(panel=>{
+  if(panel.dataset.gcCards==='1'){
+   // still ensure notices are not clamped if DOM mutated
+  }else{
+   panel.dataset.gcCards='1';
+  }
+  let h2=panel.querySelector(':scope > h2');
+  let group=panel.querySelector(':scope > .iosGroup');
+  if(!group){
+   let buttons=[...panel.querySelectorAll(':scope > button, :scope > .primary, :scope > .softButton')];
+   if(buttons.length){
+    group=document.createElement('div');group.className='iosGroup';
+    buttons.forEach(b=>group.append(b));
+    panel.append(group);
+   }
+  }
+  let wrap=panel.querySelector(':scope > .gcFieldCard');
+  let lab=panel.querySelector(':scope > label');
+  let sel=panel.querySelector(':scope > select');
+  if((lab||sel)&&!wrap){
+   wrap=document.createElement('div');wrap.className='gcFieldCard';
+   if(lab)wrap.append(lab);
+   if(sel)wrap.append(sel);
+   panel.append(wrap);
+  }else if(wrap){
+   if(lab&&lab.parentElement!==wrap)wrap.append(lab);
+   if(sel&&sel.parentElement!==wrap)wrap.append(sel);
+  }
+  let order=[];
+  if(h2)order.push(h2);
+  let row=panel.querySelector(':scope > .toggleRow'); if(row)order.push(row);
+  let code=panel.querySelector(':scope > code'); if(code)order.push(code);
+  let ed=panel.querySelector(':scope > #homeEditor'); if(ed)order.push(ed);
+  if(wrap)order.push(wrap);
+  if(group)order.push(group);
+  panel.querySelectorAll(':scope > details').forEach(d=>order.push(d));
+  panel.querySelectorAll(':scope > p, :scope > .notice').forEach(n=>{if(!order.includes(n))order.push(n)});
+  order.forEach(n=>panel.append(n));
+ });
+
+  s.querySelectorAll('.iosGroup').forEach(g=>{
+   const vis=[...g.children].some(c=>!c.classList.contains('hidden') && c.getAttribute('aria-hidden')!=='true' && c.style.display!=='none');
+   g.classList.toggle('gcEmptyGroup',!vis);
+  });
+}
+
+
 function styleMoreHub(){
  let s=$('#settings');if(!s)return;
  if(s.dataset.gcMore!=='1'){
@@ -2894,6 +3215,7 @@ function styleMoreHub(){
  let h1=s.querySelector('h1');if(h1)h1.textContent='Mehr';
  // Hide debug/status watermarks that leak into Mehr
  ['#statusLine','#versionInfo','.eyebrow'].forEach(sel=>{let el=s.querySelector(sel)||$(sel);if(el&&s.contains(el))el.style.display='none'});
+ styleSettingsCards();
 }
 
 function restyleDetailPeriods(){
@@ -2931,7 +3253,7 @@ move=function(a,p,n){if(p==='F'){let d=new Date(a);d.setDate(d.getDate()+28*n);r
    b.setAttribute('aria-selected',String(!!sel&&b.id===sel));
   });
   if(id==='overview'){ensureMeinTag();renderMeinTag()}
-  if(id==='settings'){styleMoreHub()}
+  if(id==='settings'){styleMoreHub();styleSettingsCards()}
   if(id==='activitiesView'){let back=$('#activitiesBack');if(back){back.classList.add('hidden');back.style.display='none'}let h=$('#activitiesView h1');if(h)h.textContent='Aktivitäten'}
   if(id==='detail'){restyleDetailPeriods();let back=$('#back');if(back)back.textContent='‹ Startseite'}
  };
