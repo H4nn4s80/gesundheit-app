@@ -1,5 +1,5 @@
 /* Gesundheit 1.0 · Build 8.3. Es werden ausschließlich öffentliche App-Dateien und verschlüsselte Daten gecacht. */
-const CACHE='gesundheit-v1-0-b8-4-compare';
+const CACHE='gesundheit-v1-0-b8-5-glass5';
 const FILES=['index.html','manifest.webmanifest','apple-touch-icon.png','icon-192.png','icon-512.png','data.enc.json'];
 const root=new URL('./',self.location.href);
 self.addEventListener('install',event=>event.waitUntil((async()=>{let c=await caches.open(CACHE);await c.addAll(FILES.map(f=>new Request(new URL(f,root),{cache:'reload'})));await self.skipWaiting()})()));
