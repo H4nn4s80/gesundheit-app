@@ -2789,9 +2789,175 @@ html[data-gc-theme="dark"] #chart .gcXLabel{stroke:#1c2234}
 }
 
 /* /Build 8.12 CSS */
+
+
+
+/* Build 8.13 CSS */
+/* Build 8.13: Zurück-Navigation und klare Detailbeschriftung */
+#back, #activitiesBack, #activityBack, #compareBack, #settingsBack, #compactBack,
+#gcCondBack, .gc813Back, button.gcBack {
+  font-weight: 650;
+}
+#detailSummary .gc813Note {
+  margin: 8px 0 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+  font-weight: 500;
+  color: var(--muted, #6b7288);
+  max-width: 36em;
+}
+#detail #title.gc813Official {
+  letter-spacing: -0.4px;
+}
+#detail #source.gc813Official {
+  color: var(--muted, #6b7288);
+}
+.gc813Back {
+  display: inline-flex;
+  align-items: center;
+  margin: 4px 0 8px;
+}
+
+/* Build 8.13b: ACWR-Zonenleiste und Idealbereich im Diagramm */
+.gc813Acwr{
+  margin:10px 0 2px;
+  width:100%;
+}
+.gc813AcwrTrackWrap{
+  position:relative;
+  height:18px;
+}
+.gc813AcwrTrack{
+  position:absolute;
+  left:0;right:0;
+  top:2px;
+  height:14px;
+  border-radius:999px;
+  overflow:hidden;
+  background:rgba(255,255,255,.38);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.5), 0 1px 2px rgba(0,0,0,.06);
+  -webkit-backdrop-filter:blur(16px);
+  backdrop-filter:blur(16px);
+}
+html[data-gc-theme="dark"] .gc813AcwrTrack{
+  background:rgba(20,28,44,.5);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.12), 0 1px 3px rgba(0,0,0,.4);
+}
+.gc813Zone{
+  position:absolute;
+  top:0;bottom:0;
+  pointer-events:none;
+}
+.gc813ZLow{background:rgba(110,148,186,.58)}
+.gc813ZIdeal{background:rgba(52,199,89,.7)}
+.gc813ZHigh{background:rgba(255,159,10,.78)}
+.gc813ZRisk{background:rgba(255,59,48,.78)}
+html[data-gc-theme="dark"] .gc813ZLow{background:rgba(130,168,206,.5)}
+html[data-gc-theme="dark"] .gc813ZIdeal{background:rgba(48,209,88,.62)}
+html[data-gc-theme="dark"] .gc813ZHigh{background:rgba(255,179,64,.72)}
+html[data-gc-theme="dark"] .gc813ZRisk{background:rgba(255,69,58,.72)}
+.gc813Mark{
+  position:absolute;
+  top:50%;
+  width:18px;
+  height:18px;
+  margin-left:-9px;
+  margin-top:-9px;
+  border-radius:50%;
+  border:2px solid #fff;
+  box-shadow:0 1px 4px rgba(0,0,0,.25), 0 0 0 1px rgba(0,0,0,.08);
+  z-index:2;
+  pointer-events:none;
+}
+html[data-gc-theme="dark"] .gc813Mark{
+  border-color:#1c2234;
+  box-shadow:0 1px 4px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.18);
+}
+.gc813Mark-low{background:#6d8aa8}
+.gc813Mark-ideal{background:#34C759}
+.gc813Mark-high{background:#FF9F0A}
+.gc813Mark-risk{background:#FF3B30}
+html[data-gc-theme="dark"] .gc813Mark-low{background:#8aa8c4}
+html[data-gc-theme="dark"] .gc813Mark-ideal{background:#30D158}
+html[data-gc-theme="dark"] .gc813Mark-high{background:#FFB340}
+html[data-gc-theme="dark"] .gc813Mark-risk{background:#FF453A}
+.gc813AcwrScale{
+  position:relative;
+  height:16px;
+  margin-top:2px;
+  font-size:10.5px;
+  font-weight:560;
+  color:var(--muted, #6b7288);
+  font-variant-numeric:tabular-nums;
+}
+.gc813AcwrScale span{
+  position:absolute;
+  top:0;
+  transform:translateX(-50%);
+  white-space:nowrap;
+}
+.gc813AcwrScale span:first-child{transform:translateX(0)}
+.gc813AcwrScale span:last-child{transform:translateX(-100%)}
+.gc813AcwrLegend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px 12px;
+  margin:8px 0 0;
+  font-size:11px;
+  line-height:1.25;
+  color:var(--muted, #6b7288);
+}
+.gc813AcwrLegend i{
+  display:inline-block;
+  width:8px;
+  height:8px;
+  border-radius:99px;
+  margin-right:5px;
+  vertical-align:middle;
+}
+.gc813AcwrLegend .dot-low{background:#6d8aa8}
+.gc813AcwrLegend .dot-ideal{background:#34C759}
+.gc813AcwrLegend .dot-high{background:#FF9F0A}
+.gc813AcwrLegend .dot-risk{background:#FF3B30}
+.gc813AcwrSentence{
+  margin:8px 0 0;
+  font-size:13px;
+  line-height:1.4;
+  font-weight:600;
+  color:var(--text);
+}
+.gc813AcwrSentence.is-low{color:#3d5770}
+.gc813AcwrSentence.is-ideal{color:#1f7a3a}
+.gc813AcwrSentence.is-high{color:#9a5b00}
+.gc813AcwrSentence.is-risk{color:#c0251c}
+html[data-gc-theme="dark"] .gc813AcwrSentence.is-low{color:#b7cbe0}
+html[data-gc-theme="dark"] .gc813AcwrSentence.is-ideal{color:#7ee09a}
+html[data-gc-theme="dark"] .gc813AcwrSentence.is-high{color:#ffd08a}
+html[data-gc-theme="dark"] .gc813AcwrSentence.is-risk{color:#ff8d86}
+.gc813AcwrExplain{
+  margin:4px 0 0;
+  font-size:12px;
+  line-height:1.35;
+  color:var(--muted, #6b7288);
+}
+.gcFocusCard .gc813Acwr{margin:8px 0 2px}
+.gcFocusCard .gc813AcwrSentence{font-size:12px;font-weight:600}
+.gcFocusCard .gc813AcwrExplain{font-size:11px}
+.gcFocusCard .gc813AcwrLegend{display:none}
+#detailSummary .gc813Acwr{margin:10px 0 2px}
+.gc813IdealBand{pointer-events:none}
+.gc813IdealLabel{
+  font-size:9.5px;
+  font-weight:650;
+  fill:#1f7a3a;
+  pointer-events:none;
+}
+html[data-gc-theme="dark"] .gc813IdealLabel{fill:#7ee09a}
+
+/* /Build 8.13 CSS */
 </style><main><section id="auth" class="lock"><div class="lock-icon" aria-hidden="true">♥</div><div class="eyebrow">Privat &amp; verschlüsselt</div><h1>Deine Gesundheit</h1><p class="sub">Entsperre deine Übersicht mit deinem Passwort. Deine Messwerte bleiben verschlüsselt gespeichert.</p><form id="unlockForm"><label for="password">Passwort</label><input class="field" id="password" type="password" autocomplete="current-password" required><p class="notice">Beim ersten Öffnen brauchst du das Passwort. Danach bleibt der Zugang auf diesem Gerät gespeichert.</p><button class="primary" id="unlock" type="submit">Entsperren</button><p id="authError" role="alert"></p></form><p class="notice">Auf gemeinsamen Geräten bitte abmelden. Ohne Passwort können die Daten nach dem Abmelden nicht wiederhergestellt werden.</p></section><section id="pinScreen" class="lock pinScreen hidden" aria-label="Gespeicherter Zugang"><div class="eyebrow">Dein lokaler Zugang</div><h1 id="pinTitle">Zugang</h1><p id="pinHelp" class="sub"></p><input id="pinInput" class="pinInput" type="password" inputmode="none" readonly maxlength="8" autocomplete="off" aria-label="Zugang"><div id="pinPad" class="pinPad"><button class="pinKey" type="button" data-digit="1" aria-label="Ziffer 1">1</button><button class="pinKey" type="button" data-digit="2" aria-label="Ziffer 2">2</button><button class="pinKey" type="button" data-digit="3" aria-label="Ziffer 3">3</button><button class="pinKey" type="button" data-digit="4" aria-label="Ziffer 4">4</button><button class="pinKey" type="button" data-digit="5" aria-label="Ziffer 5">5</button><button class="pinKey" type="button" data-digit="6" aria-label="Ziffer 6">6</button><button class="pinKey" type="button" data-digit="7" aria-label="Ziffer 7">7</button><button class="pinKey" type="button" data-digit="8" aria-label="Ziffer 8">8</button><button class="pinKey" type="button" data-digit="9" aria-label="Ziffer 9">9</button><span></span><button class="pinKey" type="button" data-digit="0" aria-label="Ziffer 0">0</button><button class="pinKey" id="pinDelete" type="button" aria-label="Letzte Ziffer löschen">⌫</button></div><button id="pinContinue" class="primary" type="button">Weiter</button><button id="faceUnlock" class="faceButton hidden" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M9 9v1.5M15 9v1.5M12 9v4h-1M9.5 16a4 4 0 0 0 5 0"/></svg><span>Mit Face ID entsperren</span></button><p id="pinError" role="alert" aria-live="polite"></p><button id="pinRestart" class="textButton hidden" type="button">Neu beginnen</button><button id="pinUsePassword" class="textButton" type="button">Zur Passwortabfrage</button><p class="pinHint">Abmelden entfernt den gespeicherten Schlüssel. Das Datenpasswort bleibt unverändert.</p></section><div id="app" class="hidden"><nav class="toolbar" aria-label="Hauptnavigation" role="tablist"><button id="summaryButton" role="tab" aria-selected="true" aria-controls="overview"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h4l2-7 4 13 2-6h4"/></svg><span>Zusammenfassung</span></button><button id="activitiesButton" role="tab" aria-selected="false" aria-controls="activitiesView"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="14" cy="4" r="2"/><path d="m7 9 4-2 4 5 5 1M12 9l-3 7-5 4m7-6 5 3 1 4"/></svg><span>Aktivitäten</span></button><button id="settingsButton" role="tab" aria-selected="false" aria-controls="settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="2"/><circle cx="15" cy="12" r="2"/><circle cx="9" cy="18" r="2"/></svg><span>Einstellungen</span></button></nav><div id="statusLine" role="status"></div><section id="overview"><div class="eyebrow">Dein privater Überblick</div><h1>Heute</h1><p class="sub">Dein Tag. Dein Tempo.</p><section id="todayCard" class="panel"></section><section class="panel"><h2>Deine Tagesziele</h2><div id="goalRings"></div><details><summary>Ringziele anpassen</summary><form id="ringForm"><div class="ringFormGrid"><label>Schritte pro Tag<input id="ring-steps" class="field" type="number" min="1" max="100000" required></label><label>Schlaf pro Nacht (Stunden)<input id="ring-sleep" class="field" type="number" min="0.1" max="24" step="0.1" required></label><label>Intensitätsminuten pro Tag<input id="ring-intensity" class="field" type="number" min="1" max="1440" required></label></div><button class="primary">Ringziele speichern</button><p id="ringMessage" role="status"></p></form></details><p class="notice">Startziele: 8.000 Schritte, 8 Stunden Schlaf, 30 Intensitätsminuten (moderat + intensiv, ohne Doppelgewichtung). Frei wählbar, keine medizinische Empfehlung.</p></section><section id="weeklyReview" class="panel"></section><section class="panel"><h2>Zusammenhänge</h2><div id="insightRows"></div><details id="relationshipMethod"><summary>Was zeigen die Zusammenhänge?</summary><p class="notice">Letzte 90 Kalendertage, mindestens 20 gemeinsame Tage. Schlaf und Tageswerte am gleichen Datum. Zusammenhang bedeutet keine Ursache; Alltag, Training und Messfehler können mitwirken. r reicht von −1 (gegenläufig) über 0 (kein linearer Zusammenhang) bis +1 (gleichläufig). Die Farbe zeigt die Stärke, nicht ob ein Wert gesund ist. Ab |r| = 0,2 schwach, 0,4 mittel, 0,6 stark. Bei konstanten Werten ist r nicht berechenbar.</p></details></section><section id="bodySection" class="panel"><h2>Körperzusammensetzung</h2><div id="bodyCards" class="bodyGrid"></div><p class="notice">Jeweils letzter verfügbarer Waagenwert; Messdaten können von unterschiedlichen Tagen stammen. Trends sind neutral: Mehr oder weniger ist nicht automatisch besser. Körperfett, Muskelmasse, Wasser und Knochenmasse sind Waagenschätzungen, keine unabhängigen Anteile zum Addieren.</p></section><h2>Highlights</h2><div class="hlGrid" id="highlights" role="list"></div><div class="sectionHeading"><h2>Favoriten</h2><button id="editFavorites" class="textButton">Bearbeiten</button></div><div id="favoritesEditor" class="panel hidden"></div><p id="favoritesEmpty" class="notice hidden">Wähle deine Favoriten über Bearbeiten.</p><div class="cards" id="favoritesCards"></div><div id="groups"></div><details><summary>Daten &amp; Datenschutz</summary><p class="notice" id="about"></p></details><p class="notice">Privat · offline · ohne externe Dienste<br>Keine Diagnose oder medizinische Beratung.</p></section><section id="detail" class="hidden"><button class="back" id="back">‹ Zusammenfassung</button><div id="category" class="eyebrow"></div><h1 id="title"></h1><p id="source" class="sub"></p><div class="detailControls"><button id="favoriteDetail" class="softButton" aria-pressed="false">☆ Als Favorit</button><button id="compareButton" class="softButton">Vergleichen</button></div><details id="goalEditor" class="panel goalEditor"><summary>Ziel für diese Kennzahl</summary><form id="goalForm"><label for="goalValue">Zielwert</label><input id="goalValue" type="number" inputmode="decimal" step="any" min="0.001" class="field"><label for="goalDirection">Richtung</label><select id="goalDirection"><option value="min">Mindestens</option><option value="max">Höchstens</option><option value="target">Zielwert erreichen</option></select><button type="submit" class="primary">Ziel speichern</button><button id="removeGoal" type="button" class="softButton">Ziel entfernen</button><p id="goalMessage" role="status"></p><p class="notice">Nur auf diesem Gerät, keine medizinische Empfehlung.</p></form></details><div class="segments" aria-label="Zeitraum"><button data-period="W" aria-label="Woche">W</button><button data-period="M" aria-label="Monat">M</button><button data-period="Q" aria-label="90 Tage">90 T</button><button data-period="J" aria-label="Jahr">J</button></div><button class="softButton" id="smoothToggle" aria-pressed="true">7-Tage-Schnitt</button><p class="notice" id="smoothNote"></p><div class="nav"><button id="prev" aria-label="Vorheriger Zeitraum">‹</button><span class="range" id="range"></span><button id="next" aria-label="Nächster Zeitraum">›</button></div><div class="panel"><div id="selection" class="selected" aria-live="polite">Diagramm antippen</div><svg id="chart" class="chart" viewBox="0 0 340 220" role="img" aria-label="Verlauf; Einzelwerte stehen auch in der Liste"></svg><p class="notice" id="coverage"></p></div><div class="panel stats" id="stats"></div><p class="notice" id="trendNote"></p><h2>Einzelwerte</h2><div class="panel" id="list"></div><p class="notice">Tageswerte, keine stündlichen Messungen. Fehlende Tage bleiben Lücken. Aktuelle Zeiträume sind eventuell unvollständig.</p></section><section id="activitiesView" class="hidden"><button class="back" id="activitiesBack">‹ Zusammenfassung</button><h1>Aktivitäten</h1><p class="sub" id="activitiesSub">Dein Training im Verlauf</p><div class="segments" aria-label="Aktivitäten-Seiten"><button type="button" data-apage="0" aria-pressed="true">Einheiten</button><button type="button" data-apage="1" aria-pressed="false">Trainingsstatus</button></div><div class="pageDots" aria-hidden="true"><span class="on"></span><span></span></div><div class="pager" id="activityPager"><div class="pages" id="activityPages"><div class="page" id="activitiesPage" aria-hidden="false"><label class="filterLabel" for="activityFilter">Sportart filtern</label><select id="activityFilter" class="field"></select><p id="activityCount" class="notice"></p><details class="panel"><summary>Bestwerte im gespeicherten Verlauf</summary><p class="notice">Je Sportart, nur aus den vorhandenen Aktivitäten. Keine bestätigten Lebenszeitrekorde oder Streckenrekorde.</p><div id="personalBests"></div></details><div id="activitiesList"></div></div><div class="page collapsed" id="trainingPage" aria-hidden="true"><div id="trainingRows"></div></div></div></div></section><section id="activityDetail" class="hidden"></section><section id="settings" class="hidden"><button class="back" id="settingsBack">‹ Zusammenfassung</button><h1>Einstellungen</h1><div class="panel"><h2>Privater Zugang</h2><p class="notice" id="rememberStatus"></p><button class="primary" id="changePin">PIN ändern</button><button class="primary" id="logout">Abmelden</button><p class="notice">Abmelden entfernt den gespeicherten Schlüssel von diesem Gerät. Das verschlüsselte Offline-Paket bleibt erhalten. Ein vergessenes Passwort kann hier nicht zurückgesetzt werden.</p></div><div class="panel"><h2>Kurzbefehle</h2><p>In Kurzbefehle: „URL“ hinzufügen, dann „URLs öffnen“.</p><code id="shortcutURL"></code><p class="notice">Öffnet eine kompakte Ansicht im Browser. Erst nach dem Entsperren werden Werte lokal entschlüsselt. Kein echtes iOS-Startbildschirm-Widget und kein öffentlicher JSON-Endpunkt. „Inhalte von URL abrufen“ liefert keine Gesundheitswerte.</p></div><div class="panel"><h2>Daten &amp; App</h2><p id="versionInfo"></p><button class="primary" id="refresh">Nach Aktualisierungen suchen</button><p class="notice">Neue Daten werden online geladen, offline wird der letzte verschlüsselte Stand verwendet. Bei einem neuen Passwort musst du erneut entsperren.</p></div><div class="panel hidden" id="facePanel"><h2>Face ID</h2><div class="toggleRow"><span><strong>Mit Face ID entsperren</strong><small id="faceStatus"></small></span><button type="button" id="faceToggle" class="switch" role="switch" aria-checked="false" aria-label="Face ID aktivieren"><span></span></button></div><button type="button" id="faceSetup" class="primary hidden">Face ID einrichten</button><p id="faceMessage" class="notice" role="status" aria-live="polite"></p><p class="notice">Face ID nutzt einen Passkey dieses Geräts. Der Datenschlüssel wird damit verschlüsselt, zusätzlich zum Geräte-Schlüssel. Der Geräte-Schlüssel bleibt die Standardentsperrung.</p></div></section><section id="compactView" class="hidden"><button id="compactBack" class="back">‹ Zusammenfassung</button><div id="compactContent" class="panel"></div></section><section id="compareView" class="hidden"><button id="compareBack" class="back">‹ Zur Kennzahl</button><h1>Vergleichen</h1><div class="panel compareSelectors"><label>Erste Kennzahl<select id="compareA"></select></label><label>Zweite Kennzahl<select id="compareB"></select></label></div><div class="segments" aria-label="Vergleichszeitraum"><button data-cperiod="W" aria-label="Woche">W</button><button data-cperiod="M" aria-label="Monat">M</button><button data-cperiod="Q" aria-label="90 Tage">90 T</button><button data-cperiod="J" aria-label="Jahr">J</button></div><div class="nav"><button id="comparePrev" aria-label="Vorheriger Vergleichszeitraum">‹</button><span id="compareRange" class="range"></span><button id="compareNext" aria-label="Nächster Vergleichszeitraum">›</button></div><div class="panel"><p id="compareLegend"></p><svg id="compareChart" class="chart" viewBox="0 0 340 220" role="img" aria-label="Zwei auf 0 bis 100 normierte Zeitreihen"></svg><p id="correlation"></p><p id="compareCount" class="notice"></p></div><h2>Gemeinsame Tageswerte</h2><div id="compareList" class="panel"></div></section></div></main>
 <script>
-const APP_VERSION='1.0', APP_BUILD=8.12;
+const APP_VERSION='1.0', APP_BUILD=8.13;
 let DATA=null;
 const colors={'Körpermaße':'var(--body-color)','Aktivität':'var(--activity-color)','Schlaf':'var(--sleep-color)','Herz':'var(--heart-color)'};
 const $=s=>document.querySelector(s), fmt=(n,u)=>formatNumber(n,u), date=s=>new Date(s+'T12:00:00'), iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`, label=s=>date(s).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'});
@@ -8577,5 +8743,690 @@ if(typeof document!=='undefined'){
 }
 
 /* /Build 8.12 JS */
+
+
+
+/* Build 8.13 JS */
+/* Build 8.13: Zurück bleibt im Ursprungs-Tab; offizielle Last/ACWR/VO₂ klar beschriftet. */
+(function(){
+ const VIEWS=['overview','gcHealthHub','gcPerfHub','gcActsHub','gcConditionPage','detail','compareView','periodCompareView','activitiesView','activityDetail','settings','browseView','trendsView','bodyView','compactView'];
+ const ROOTS={
+  summaryButton:'overview',
+  gcHealthButton:'gcHealthHub',
+  gcPerfButton:'gcPerfHub',
+  activitiesButton:'gcActsHub',
+  settingsButton:'settings'
+ };
+ const ROOT_SET=new Set(Object.values(ROOTS));
+ const TAB_OF={
+  overview:'summaryButton',
+  gcHealthHub:'gcHealthButton',
+  gcPerfHub:'gcPerfButton',
+  gcActsHub:'activitiesButton',
+  activitiesView:'activitiesButton',
+  activityDetail:'activitiesButton',
+  settings:'settingsButton',
+  browseView:'settingsButton',
+  trendsView:'settingsButton',
+  bodyView:'settingsButton',
+  compactView:'summaryButton',
+  periodCompareView:'settingsButton',
+  gcConditionPage:'gcHealthButton'
+ };
+ const BACK_SEL='#back, #activitiesBack, #activityBack, #compareBack, #settingsBack, #compactBack, #gcCondBack, .gc813Back';
+ const BACK_LABEL='‹ Zurück';
+
+ let stack=[];
+ let silent=false;
+ let entering=false;
+ let sessionOpen=false;
+ let ignorePops=0;
+ let epoch=0;
+
+ function $(id){return document.getElementById(id)}
+
+ function visibleView(){
+  for(let i=0;i<VIEWS.length;i++){
+   let el=$(VIEWS[i]);
+   if(el && !el.classList.contains('hidden')) return VIEWS[i];
+  }
+  return 'overview';
+ }
+
+ function currentTab(){
+  let b=document.querySelector('.toolbar button[role="tab"][aria-selected="true"]');
+  if(b && ROOTS[b.id]) return b.id;
+  return TAB_OF[visibleView()]||'summaryButton';
+ }
+
+ function originTab(){
+  if(stack.length){
+   let t=stack[0].tab;
+   if(t && ROOTS[t]) return t;
+  }
+  try{ if(typeof detailOrigin==='string' && ROOTS[detailOrigin]) return detailOrigin; }catch(e){}
+  return currentTab();
+ }
+
+ function snapshot(){
+  let cmpA=$('compareA'), cmpB=$('compareB');
+  return {
+   view:visibleView(),
+   tab:currentTab(),
+   scroll:window.scrollY||0,
+   activityPage:typeof activityPage==='number'?activityPage:0,
+   metricId:(typeof metric!=='undefined' && metric && metric.id)?metric.id:null,
+   period:typeof period!=='undefined'?period:null,
+   compareA:cmpA?cmpA.value:null,
+   compareB:cmpB?cmpB.value:null
+  };
+ }
+
+ function highlight(tabId){
+  let tab=ROOTS[tabId]?tabId:originTab();
+  document.querySelectorAll('.toolbar button[role="tab"]').forEach(b=>{
+   if(b.classList.contains('hiddenTab')) return;
+   b.setAttribute('aria-selected', String(b.id===tab));
+  });
+ }
+
+ function ensureSubBack(viewId){
+  let view=$(viewId);
+  if(!view) return;
+  let existing=view.querySelector(':scope > .gc813Back, :scope > .back, :scope > .gcBack, :scope > #back');
+  if(!existing){
+   existing=document.createElement('button');
+   existing.type='button';
+   existing.className='back gc813Back';
+   view.insertBefore(existing, view.firstChild);
+  }
+  existing.textContent=BACK_LABEL;
+  existing.classList.remove('hidden');
+  existing.style.display='';
+ }
+
+ function setBackLabels(){
+  document.querySelectorAll(BACK_SEL).forEach(el=>{
+   if(el) el.textContent=BACK_LABEL;
+  });
+  let view=visibleView();
+  let actBack=$('activitiesBack');
+  if(actBack){
+   let show=view==='activitiesView' && stack.length>0;
+   actBack.classList.toggle('hidden', !show);
+   actBack.style.display=show?'':'none';
+   if(show) actBack.textContent=BACK_LABEL;
+  }
+  let setBack=$('settingsBack');
+  if(setBack && view==='settings'){
+   setBack.classList.add('hidden');
+   setBack.style.display='none';
+  }
+  if(['browseView','trendsView','bodyView','periodCompareView','compactView','gcConditionPage'].indexOf(view)>=0){
+   ensureSubBack(view);
+  }
+ }
+
+ function polishDetailHeader(){
+  if(typeof metric==='undefined' || !metric) return;
+  let title=$('title'), src=$('source');
+  if(metric.id==='acwr'){
+   if(title){ title.textContent='Belastungsverhältnis (ACWR)'; title.classList.add('gc813Official'); }
+   if(src){ src.textContent='Offizielle Werte der Uhr. Kein selbst gerechnetes Verhältnis.'; src.classList.add('gc813Official'); }
+  }else if(metric.id==='load'){
+   if(title){ title.textContent='Offizielle akute Trainingslast'; title.classList.add('gc813Official'); }
+   if(src){ src.textContent='Werte der Uhr, nicht die Summe deiner Einheiten.'; src.classList.add('gc813Official'); }
+  }else if(metric.id==='chronic'){
+   if(title){ title.textContent='Offizielle chronische Trainingslast'; title.classList.add('gc813Official'); }
+   if(src){ src.textContent='Werte der Uhr, nicht die aus Einheiten rekonstruierte Last.'; src.classList.add('gc813Official'); }
+  }else{
+   if(title) title.classList.remove('gc813Official');
+   if(src) src.classList.remove('gc813Official');
+  }
+ }
+
+ function fmtVal(v, unit){
+  try{
+   if(typeof formatNumber==='function') return formatNumber(v, unit);
+  }catch(e){}
+  if(v==null || v!==v) return '—';
+  if(unit==='Verhältnis') return String(v).replace('.', ',');
+  return String(v);
+ }
+
+ function fmtDate(d){
+  try{ if(typeof label==='function') return label(d); }catch(e){}
+  return d||'—';
+ }
+
+ function officialNote(){
+  if(typeof metric==='undefined' || !metric) return;
+  let sum=$('detailSummary');
+  if(!sum) return;
+  let last=metric.points && metric.points.length?metric.points[metric.points.length-1]:null;
+  let lastDate=last && last.date;
+  let lastVal=last && last.value;
+  let text='';
+  if(metric.id==='load'){
+   text='Offizielle akute Trainingslast der Uhr. Letzter Wert: '+(lastVal==null?'—':fmtVal(lastVal, metric.unit)+' '+(metric.unit||'Punkte'))+' am '+(lastDate?fmtDate(lastDate):'—')+'. Der Durchschnitt oben gilt für den gewählten Zeitraum.';
+  }else if(metric.id==='chronic'){
+   text='Offizielle chronische Trainingslast der Uhr. Letzter Wert: '+(lastVal==null?'—':fmtVal(lastVal, metric.unit)+' '+(metric.unit||'Punkte'))+' am '+(lastDate?fmtDate(lastDate):'—')+'.';
+  }else if(metric.id==='acwr'){
+   text='Offizielles Belastungsverhältnis der Uhr (ACWR). Letzter Wert: '+(lastVal==null?'—':fmtVal(lastVal, metric.unit))+' am '+(lastDate?fmtDate(lastDate):'—')+'. Der Durchschnitt oben ist der Mittelwert der offiziellen Werte im gewählten Zeitraum, nicht das frühere eigene Verhältnis.';
+  }else if(metric.id==='vo2run' || metric.id==='vo2row'){
+   let fresh=null;
+   try{ if(typeof gc812GarminFreshDate==='function') fresh=gc812GarminFreshDate(); }catch(e){}
+   if(lastDate && fresh && lastDate<fresh){
+    text='Letzter Wert von Garmin: '+fmtDate(lastDate)+'. Danach hat Garmin keinen neueren Wert geliefert.';
+   }else if(lastDate){
+    text='Letzter Wert von Garmin: '+fmtDate(lastDate)+'.';
+   }
+  }
+  let note=sum.querySelector('.gc813Note');
+  if(!text){
+   if(note) note.remove();
+   return;
+  }
+  if(!note){
+   note=document.createElement('p');
+   note.className='gc813Note';
+   sum.appendChild(note);
+  }
+  note.textContent=text;
+ }
+
+ function applyOverlayChrome(){
+  let view=visibleView();
+  if(!ROOT_SET.has(view) || stack.length){
+   highlight(originTab());
+  }
+  setBackLabels();
+  if(view==='detail'){
+   polishDetailHeader();
+   officialNote();
+  }
+ }
+
+ function path(){ return location.pathname+location.search; }
+
+ function pushPlace(before){
+  stack.push(before||snapshot());
+  try{
+   history.pushState({
+    gc813:true,
+    epoch:epoch,
+    depth:stack.length,
+    view:visibleView(),
+    tab:originTab(),
+    metric:(typeof metric!=='undefined' && metric)?metric.id:null
+   }, '', path());
+  }catch(e){}
+ }
+
+ function restore(place){
+  if(!place) return;
+  silent=true;
+  try{
+   if(place.period && typeof period!=='undefined') period=place.period;
+   if(place.view==='detail' && place.metricId && typeof DATA!=='undefined' && DATA && typeof open==='function'){
+    let m=DATA.metrics.find(x=>x.id===place.metricId);
+    if(m) open(m);
+    else if(typeof showView==='function') showView(place.view);
+   }else if(typeof showView==='function'){
+    showView(place.view);
+   }
+   if((place.view==='activitiesView' || place.view==='gcActsHub') && typeof setActivityPage==='function'){
+    setActivityPage(place.activityPage||0, false);
+   }
+   if(place.view==='compareView'){
+    let a=$('compareA'), b=$('compareB');
+    if(a && place.compareA) a.value=place.compareA;
+    if(b && place.compareB) b.value=place.compareB;
+    try{ if(typeof renderCompare==='function') renderCompare(); }catch(e){}
+   }
+   highlight(place.tab||originTab());
+   setBackLabels();
+   let y=place.scroll||0;
+   let go=()=>{ try{ window.scrollTo(0, y); }catch(e){} };
+   go();
+   requestAnimationFrame(()=>requestAnimationFrame(go));
+   setTimeout(go, 60);
+   setTimeout(go, 180);
+  }catch(e){
+   try{ if(typeof showView==='function') showView(place.view||'overview'); }catch(e2){}
+  }finally{
+   silent=false;
+   applyOverlayChrome();
+  }
+ }
+
+ function goBack(){
+  if(!stack.length) return;
+  let place=stack.pop();
+  ignorePops++;
+  restore(place);
+  try{ history.back(); }
+  catch(e){ ignorePops=Math.max(0,ignorePops-1); }
+ }
+
+ function selectRoot(view, tab){
+  let n=stack.length;
+  stack=[];
+  epoch++;
+  silent=true;
+  try{
+   if(typeof showView==='function') showView(view);
+   highlight(tab||TAB_OF[view]||'summaryButton');
+   window.scrollTo(0,0);
+  }finally{ silent=false; }
+  if(n>0){
+   ignorePops++;
+   try{ history.go(-n); }
+   catch(e){
+    ignorePops=Math.max(0,ignorePops-1);
+    try{ history.replaceState({gc813:true, epoch:epoch, depth:0, view:view}, '', path()); }catch(e2){}
+   }
+  }else{
+   try{ history.replaceState({gc813:true, epoch:epoch, depth:0, view:view}, '', path()); }catch(e){}
+  }
+  applyOverlayChrome();
+ }
+
+ window.addEventListener('popstate', function(ev){
+  if(silent) return;
+  if(ignorePops>0){
+   ignorePops--;
+   try{ history.replaceState({gc813:true, epoch:epoch, depth:0, view:visibleView()}, '', path()); }catch(e){}
+   return;
+  }
+  let st=ev&&ev.state;
+  if(st && st.gc813 && st.epoch!=null && st.epoch!==epoch){
+   return;
+  }
+  if(stack.length){
+   let place=stack.pop();
+   restore(place);
+  }
+ });
+
+ document.addEventListener('click', function(ev){
+  let tab=ev.target && ev.target.closest && ev.target.closest('.toolbar button[role="tab"]');
+  if(tab && !tab.classList.contains('hiddenTab') && ROOTS[tab.id]){
+   ev.preventDefault();
+   ev.stopPropagation();
+   ev.stopImmediatePropagation();
+   selectRoot(ROOTS[tab.id], tab.id);
+   return;
+  }
+  let back=ev.target && ev.target.closest && ev.target.closest(BACK_SEL);
+  if(back){
+   ev.preventDefault();
+   ev.stopPropagation();
+   ev.stopImmediatePropagation();
+   goBack();
+   return;
+  }
+  let go=ev.target && ev.target.closest && ev.target.closest('[data-go="ready"]');
+  if(go){
+   ev.preventDefault();
+   ev.stopPropagation();
+   ev.stopImmediatePropagation();
+   if(!silent){
+    entering=true;
+    pushPlace(snapshot());
+    entering=false;
+   }
+   try{ if(typeof detailOrigin!=='undefined') detailOrigin=originTab(); }catch(e){}
+   if(typeof gc810OpenCondition==='function'){
+    silent=true;
+    try{ gc810OpenCondition(); }
+    finally{ silent=false; }
+   }else if(typeof showView==='function'){
+    silent=true;
+    try{ showView('gcHealthHub'); }
+    finally{ silent=false; }
+   }
+   applyOverlayChrome();
+  }
+ }, true);
+
+ if(typeof open==='function'){
+  const prevOpen=open;
+  open=function(m){
+   if(!silent){
+    let snap=snapshot();
+    let same=snap.view==='detail' && metric && m && metric.id===m.id;
+    if(!same){
+     entering=true;
+     pushPlace(snap);
+    }
+    try{ detailOrigin=originTab(); }catch(e){}
+   }
+   try{ prevOpen(m); }
+   finally{ entering=false; }
+   if(!silent){
+    try{ detailOrigin=originTab(); }catch(e){}
+    highlight(originTab());
+    setBackLabels();
+    polishDetailHeader();
+    officialNote();
+   }
+  };
+ }
+
+ if(typeof showView==='function'){
+  const prevShow=showView;
+  showView=function(id){
+   if(!silent && !entering && id && id!==visibleView() && !ROOT_SET.has(id)){
+    pushPlace(snapshot());
+   }
+   prevShow(id);
+   if(!silent) applyOverlayChrome();
+   else{
+    if(!ROOT_SET.has(id)) highlight(originTab());
+    setBackLabels();
+    if(id==='detail'){ polishDetailHeader(); officialNote(); }
+   }
+  };
+ }
+
+ if(typeof setActiveTab==='function'){
+  const prevSAT=setActiveTab;
+  setActiveTab=function(id){
+   if(id==='detail'||id==='compareView'||id==='gcConditionPage'||id==='activityDetail'||id==='periodCompareView'){
+    highlight(originTab());
+    return;
+   }
+   prevSAT(id);
+  };
+ }
+
+ if(typeof syncDetailExtras==='function'){
+  const prevSync=syncDetailExtras;
+  syncDetailExtras=function(){
+   prevSync();
+   setBackLabels();
+   polishDetailHeader();
+   officialNote();
+  };
+ }
+
+ if(typeof updateDetailSummary==='function'){
+  const prevSum=updateDetailSummary;
+  updateDetailSummary=function(){
+   prevSum();
+   polishDetailHeader();
+   officialNote();
+  };
+ }
+
+ if(typeof unlocked==='function'){
+  const prevUnlocked=unlocked;
+  unlocked=function(data){
+   let had=sessionOpen;
+   let stay=had?snapshot():null;
+   let keep=had?stack.slice():[];
+   let state=null;
+   try{ state=history.state; }catch(e){}
+   prevUnlocked(data);
+   sessionOpen=true;
+   if(had && stay && (keep.length || !ROOT_SET.has(stay.view))){
+    stack=keep;
+    restore(stay);
+    return;
+   }
+   if(!had && state && state.gc813 && state.depth>0 && state.view && state.view!=='overview'){
+    let tab=state.tab && ROOTS[state.tab]?state.tab:(TAB_OF[state.view]||'summaryButton');
+    stack=[{view:ROOTS[tab]||'overview', tab:tab, scroll:0, activityPage:0, metricId:null, period:null}];
+    silent=true;
+    try{
+     if(state.view==='detail' && state.metric && DATA){
+      let m=DATA.metrics.find(x=>x.id===state.metric);
+      if(m && typeof open==='function') open(m);
+      else if(typeof showView==='function') showView(state.view);
+     }else if(typeof showView==='function'){
+      showView(state.view);
+     }
+     highlight(tab);
+    }finally{ silent=false; }
+    applyOverlayChrome();
+    return;
+   }
+   try{ history.replaceState({gc813:true, epoch:epoch, depth:0, view:visibleView()}, '', path()); }catch(e){}
+  };
+ }
+
+
+ function gc813FmtAcwr(v){
+  if(v==null || !isFinite(Number(v))) return '—';
+  v=Number(v);
+  return (Math.round((v+Number.EPSILON)*100)/100).toFixed(2).replace('.',',');
+ }
+
+ function gc813AcwrZone(v){
+  if(v==null || !isFinite(Number(v))) return {id:'none', label:'', tone:''};
+  v=Number(v);
+  if(v<0.8) return {id:'low', label:'zu wenig', tone:'low'};
+  if(v<=1.3) return {id:'ideal', label:'ausgewogen (ideal)', tone:'ideal'};
+  if(v<=1.5) return {id:'high', label:'erhöht', tone:'high'};
+  return {id:'risk', label:'Verletzungsrisiko', tone:'risk'};
+ }
+
+ function gc813AcwrSentence(v){
+  let z=gc813AcwrZone(v);
+  let fmt=gc813FmtAcwr(v);
+  if(z.id==='none') return '';
+  if(z.id==='ideal') return 'Ideal: 0,8–1,3. Dein Wert '+fmt+' liegt im grünen Bereich.';
+  if(z.id==='high') return 'Ideal: 0,8–1,3. Dein Wert '+fmt+' ist erhöht, steigere die Belastung langsamer.';
+  if(z.id==='risk') return 'Ideal: 0,8–1,3. Dein Wert '+fmt+' bedeutet Verletzungsrisiko, plane Erholung ein.';
+  return 'Ideal: 0,8–1,3. Dein Wert '+fmt+' liegt unter dem Idealbereich, du könntest mehr trainieren.';
+ }
+
+ const GC813_ACWR_EXPLAIN='Verhältnis deiner Last der letzten 7 Tage zum 4-Wochen-Schnitt';
+
+ function gc813AcwrBar(value, opts){
+  opts=opts||{};
+  if(value==null || !isFinite(Number(value))) return '';
+  value=Number(value);
+  let z=gc813AcwrZone(value);
+  let pct=Math.max(0,Math.min(100,(value/2)*100));
+  let aria='Belastungsverhältnis '+gc813FmtAcwr(value)+', '+z.label+'. Idealbereich 0,8 bis 1,3.';
+  let legend=opts.compact?'':(`<div class="gc813AcwrLegend">
+   <span><i class="dot-low"></i>unter 0,8 zu wenig</span>
+   <span><i class="dot-ideal"></i>0,8–1,3 ausgewogen (ideal)</span>
+   <span><i class="dot-high"></i>1,3–1,5 erhöht</span>
+   <span><i class="dot-risk"></i>über 1,5 Verletzungsrisiko</span>
+  </div>`);
+  return `<div class="gc813Acwr${opts.detail?' gc813AcwrDetail':''}">
+   <div class="gc813AcwrTrackWrap">
+    <div class="gc813AcwrTrack" role="img" aria-label="${aria}">
+     <span class="gc813Zone gc813ZLow" style="left:0;width:40%"></span>
+     <span class="gc813Zone gc813ZIdeal" style="left:40%;width:25%"></span>
+     <span class="gc813Zone gc813ZHigh" style="left:65%;width:10%"></span>
+     <span class="gc813Zone gc813ZRisk" style="left:75%;width:25%"></span>
+    </div>
+    <span class="gc813Mark gc813Mark-${z.tone}" style="left:${pct}%"></span>
+   </div>
+   <div class="gc813AcwrScale" aria-hidden="true">
+    <span style="left:0%">0</span>
+    <span style="left:40%">0,8</span>
+    <span style="left:65%">1,3</span>
+    <span style="left:75%">1,5</span>
+    <span style="left:100%">2,0</span>
+   </div>
+   ${legend}
+   <p class="gc813AcwrSentence is-${z.tone}">${gc813AcwrSentence(value)}</p>
+   <p class="gc813AcwrExplain">${GC813_ACWR_EXPLAIN}</p>
+  </div>`;
+ }
+
+ function gc813EnhanceTrainingCard(){
+  let rows=document.getElementById('trainingRows');
+  if(!rows) return;
+  let sec=[...rows.querySelectorAll('.actSection, section.panel, .panel')].find(s=>/Trainingslast/.test((s.querySelector('h3')||{}).textContent||''));
+  if(!sec) return;
+  let acwr=null;
+  try{ acwr=metricBy('acwr')?.points?.at(-1)?.value; }catch(e){}
+  sec.querySelectorAll('.acwrTrack, .acwrScale, .gc813Acwr').forEach(el=>el.remove());
+  let html=gc813AcwrBar(acwr, {variant:'card'});
+  if(!html) return;
+  let box=document.createElement('div');
+  box.innerHTML=html;
+  let node=box.firstElementChild;
+  let note=sec.querySelector('.sectionNote');
+  if(note) note.before(node);
+  else sec.append(node);
+  if(note){
+   let t=note.textContent||'';
+   t=t.replace(/\s*ACWR\s*=\s*akute\s*÷\s*chronische Last\.?/i,'').trim();
+   note.textContent=t;
+  }
+ }
+
+ function gc813EnhanceDetailAcwr(){
+  let sum=document.getElementById('detailSummary');
+  if(!sum) return;
+  let old=sum.querySelector('.gc813Acwr');
+  if(typeof metric==='undefined' || !metric || metric.id!=='acwr'){
+   if(old) old.remove();
+   return;
+  }
+  let last=metric.points && metric.points.length?metric.points[metric.points.length-1]:null;
+  let html=gc813AcwrBar(last && last.value, {detail:true});
+  if(!html){ if(old) old.remove(); return; }
+  let box=document.createElement('div');
+  box.innerHTML=html;
+  let node=box.firstElementChild;
+  if(old) old.replaceWith(node);
+  else sum.append(node);
+ }
+
+ function gc813YScale(svg, lo, hi){
+  const ticks=[];
+  svg.querySelectorAll('text').forEach(t=>{
+   const x=+t.getAttribute('x'), y=+t.getAttribute('y');
+   if(!Number.isFinite(x)||!Number.isFinite(y)||x>90) return;
+   if((t.getAttribute('class')||'').indexOf('gcXLabel')>=0) return;
+   if((t.getAttribute('class')||'').indexOf('gcValLabel')>=0) return;
+   if((t.getAttribute('class')||'').indexOf('gc813')>=0) return;
+   let raw=(t.textContent||'').replace(/Verhältnis|Punkte|ml\/kg\/min/g,'').replace(/\s/g,'').replace(',','.');
+   const v=parseFloat(raw);
+   if(Number.isFinite(v)) ticks.push({v,y});
+  });
+  if(ticks.length>=2){
+   ticks.sort((a,b)=>a.v-b.v);
+   const a=ticks[0], b=ticks[ticks.length-1];
+   if(b.v!==a.v) return v=>a.y+(v-a.v)/(b.v-a.v)*(b.y-a.y);
+  }
+  const lo0=(lo!=null)?lo:0, hi0=(hi!=null&&hi>lo0)?hi:lo0+1;
+  return v=>180-(v-lo0)/(hi0-lo0)*145;
+ }
+
+ function gc813ShadeAcwr(svg){
+  svg=svg||document.getElementById('chart');
+  if(!svg) return;
+  svg.querySelectorAll('.gc813IdealBand, .gc813IdealLabel').forEach(el=>el.remove());
+  if(typeof metric==='undefined' || !metric || metric.id!=='acwr') return;
+  let d=null;
+  try{
+   let st=(window.currentStats&&window.currentStats.stats)||null;
+   if(!st && typeof stats==='function' && typeof shown!=='undefined' && shown) st=stats(shown);
+   if(st && typeof chartDomain==='function') d=chartDomain(st, metric);
+  }catch(e){ d=null; }
+  const y=gc813YScale(svg, d&&d.lo, d&&d.hi);
+  let top=y(1.3), bot=y(0.8);
+  if(!Number.isFinite(top)||!Number.isFinite(bot)) return;
+  if(bot<top){ let tmp=top; top=bot; bot=tmp; }
+  top=Math.max(30, Math.min(200, top));
+  bot=Math.max(30, Math.min(200, bot));
+  if(bot-top<3) return;
+  let x1=24, x2=316;
+  const grid=[...svg.querySelectorAll('line')].filter(l=>{
+   const y1=+l.getAttribute('y1'), y2=+l.getAttribute('y2');
+   return Number.isFinite(y1)&&Number.isFinite(y2)&&Math.abs(y1-y2)<0.6;
+  });
+  if(grid.length){
+   x1=Math.min(...grid.map(l=>+l.getAttribute('x1')));
+   x2=Math.max(...grid.map(l=>+l.getAttribute('x2')));
+  }
+  const ns='http://www.w3.org/2000/svg';
+  const rect=document.createElementNS(ns,'rect');
+  rect.setAttribute('class','gc813IdealBand');
+  rect.setAttribute('x',String(x1));
+  rect.setAttribute('width',String(Math.max(8,x2-x1)));
+  rect.setAttribute('y',String(top));
+  rect.setAttribute('height',String(bot-top));
+  rect.setAttribute('rx','6');
+  let dark=false;
+  try{ dark=document.documentElement.getAttribute('data-gc-theme')==='dark'; }catch(e){}
+  rect.setAttribute('fill', dark?'rgba(48,209,88,.22)':'rgba(52,199,89,.18)');
+  const host=svg.querySelector('#gcChartDrawn')||svg;
+  const first=[...host.children].find(n=>{
+   const tag=(n.tagName||'').toLowerCase();
+   return tag!=='defs' && n.id!=='gcChartClip';
+  });
+  if(first) host.insertBefore(rect, first);
+  else host.append(rect);
+  const lab=document.createElementNS(ns,'text');
+  lab.setAttribute('class','gc813IdealLabel');
+  lab.setAttribute('x',String(x2-4));
+  lab.setAttribute('y',String(Math.max(top+11, Math.min(bot-3, (top+bot)/2+3))));
+  lab.setAttribute('text-anchor','end');
+  lab.textContent='ausgewogen 0,8–1,3';
+  host.append(lab);
+ }
+
+ if(typeof gc811AcwrTrack==='function'){
+  gc811AcwrTrack=function(acwr){ return gc813AcwrBar(acwr, {compact:true}); };
+ }
+ if(typeof renderTraining==='function'){
+  const prevRT813=renderTraining;
+  renderTraining=function(){
+   prevRT813();
+   try{ gc813EnhanceTrainingCard(); }catch(e){}
+  };
+ }
+ if(typeof gc812EnhanceChart==='function'){
+  const prevEn=gc812EnhanceChart;
+  gc812EnhanceChart=function(s,e,st){
+   prevEn(s,e,st);
+   try{ gc813ShadeAcwr(document.getElementById('chart')); }catch(err){}
+  };
+ }else if(typeof draw==='function'){
+  const prevDraw813=draw;
+  draw=function(s,e,st){
+   prevDraw813(s,e,st);
+   try{ gc813ShadeAcwr(document.getElementById('chart')); }catch(err){}
+  };
+ }
+ if(typeof chartDomain==='function'){
+  const prevDom=chartDomain;
+  chartDomain=function(st,m){
+   let d=prevDom(st,m);
+   try{
+    if(m && m.id==='acwr' && d){
+     return Object.assign({}, d, {lo:Math.min(d.lo,0.75), hi:Math.max(d.hi,1.35)});
+    }
+   }catch(e){}
+   return d;
+  };
+ }
+ const prevChrome=applyOverlayChrome;
+ applyOverlayChrome=function(){
+  prevChrome();
+  try{ gc813EnhanceDetailAcwr(); }catch(e){}
+ };
+ if(typeof officialNote==='function'){
+  const prevNote=officialNote;
+  officialNote=function(){
+   prevNote();
+   try{ gc813EnhanceDetailAcwr(); }catch(e){}
+  };
+ }
+
+ try{ window.GC813={stack:()=>stack.slice(), goBack, snapshot, visibleView, originTab, acwrZone:gc813AcwrZone, acwrSentence:gc813AcwrSentence, fmtAcwr:gc813FmtAcwr}; }catch(e){}
+})();
+
+/* /Build 8.13 JS */
 try{start()}catch(e){}
 </script></html>
