@@ -3011,9 +3011,28 @@ html[data-gc-theme="dark"] #gcDataStand.is-old .gcGlassDot{
 }
 
 /* /Build 8.14 CSS */
+
+
+
+
+
+/* Build 8.15 CSS */
+/* Build 8.15: ehrliche VO₂max-Beschriftung */
+#gcPerfTrends .gcTrendLab b{
+  font-size:13.5px;
+  line-height:1.2;
+}
+#gcVo2Omitted{
+  margin:10px 0 0;
+  font-size:13px;
+  line-height:1.4;
+  color:var(--muted, #5c6570);
+}
+
+/* /Build 8.15 CSS */
 </style><main><section id="auth" class="lock"><div class="lock-icon" aria-hidden="true">♥</div><div class="eyebrow">Privat &amp; verschlüsselt</div><h1>Deine Gesundheit</h1><p class="sub">Entsperre deine Übersicht mit deinem Passwort. Deine Messwerte bleiben verschlüsselt gespeichert.</p><form id="unlockForm"><label for="password">Passwort</label><input class="field" id="password" type="password" autocomplete="current-password" required><p class="notice">Beim ersten Öffnen brauchst du das Passwort. Danach bleibt der Zugang auf diesem Gerät gespeichert.</p><button class="primary" id="unlock" type="submit">Entsperren</button><p id="authError" role="alert"></p></form><p class="notice">Auf gemeinsamen Geräten bitte abmelden. Ohne Passwort können die Daten nach dem Abmelden nicht wiederhergestellt werden.</p></section><section id="pinScreen" class="lock pinScreen hidden" aria-label="Gespeicherter Zugang"><div class="eyebrow">Dein lokaler Zugang</div><h1 id="pinTitle">Zugang</h1><p id="pinHelp" class="sub"></p><input id="pinInput" class="pinInput" type="password" inputmode="none" readonly maxlength="8" autocomplete="off" aria-label="Zugang"><div id="pinPad" class="pinPad"><button class="pinKey" type="button" data-digit="1" aria-label="Ziffer 1">1</button><button class="pinKey" type="button" data-digit="2" aria-label="Ziffer 2">2</button><button class="pinKey" type="button" data-digit="3" aria-label="Ziffer 3">3</button><button class="pinKey" type="button" data-digit="4" aria-label="Ziffer 4">4</button><button class="pinKey" type="button" data-digit="5" aria-label="Ziffer 5">5</button><button class="pinKey" type="button" data-digit="6" aria-label="Ziffer 6">6</button><button class="pinKey" type="button" data-digit="7" aria-label="Ziffer 7">7</button><button class="pinKey" type="button" data-digit="8" aria-label="Ziffer 8">8</button><button class="pinKey" type="button" data-digit="9" aria-label="Ziffer 9">9</button><span></span><button class="pinKey" type="button" data-digit="0" aria-label="Ziffer 0">0</button><button class="pinKey" id="pinDelete" type="button" aria-label="Letzte Ziffer löschen">⌫</button></div><button id="pinContinue" class="primary" type="button">Weiter</button><button id="faceUnlock" class="faceButton hidden" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M9 9v1.5M15 9v1.5M12 9v4h-1M9.5 16a4 4 0 0 0 5 0"/></svg><span>Mit Face ID entsperren</span></button><p id="pinError" role="alert" aria-live="polite"></p><button id="pinRestart" class="textButton hidden" type="button">Neu beginnen</button><button id="pinUsePassword" class="textButton" type="button">Zur Passwortabfrage</button><p class="pinHint">Abmelden entfernt den gespeicherten Schlüssel. Das Datenpasswort bleibt unverändert.</p></section><div id="app" class="hidden"><nav class="toolbar" aria-label="Hauptnavigation" role="tablist"><button id="summaryButton" role="tab" aria-selected="true" aria-controls="overview"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h4l2-7 4 13 2-6h4"/></svg><span>Zusammenfassung</span></button><button id="activitiesButton" role="tab" aria-selected="false" aria-controls="activitiesView"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="14" cy="4" r="2"/><path d="m7 9 4-2 4 5 5 1M12 9l-3 7-5 4m7-6 5 3 1 4"/></svg><span>Aktivitäten</span></button><button id="settingsButton" role="tab" aria-selected="false" aria-controls="settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="2"/><circle cx="15" cy="12" r="2"/><circle cx="9" cy="18" r="2"/></svg><span>Einstellungen</span></button></nav><div id="statusLine" role="status"></div><section id="overview"><div class="eyebrow">Dein privater Überblick</div><h1>Heute</h1><p class="sub">Dein Tag. Dein Tempo.</p><section id="todayCard" class="panel"></section><section class="panel"><h2>Deine Tagesziele</h2><div id="goalRings"></div><details><summary>Ringziele anpassen</summary><form id="ringForm"><div class="ringFormGrid"><label>Schritte pro Tag<input id="ring-steps" class="field" type="number" min="1" max="100000" required></label><label>Schlaf pro Nacht (Stunden)<input id="ring-sleep" class="field" type="number" min="0.1" max="24" step="0.1" required></label><label>Intensitätsminuten pro Tag<input id="ring-intensity" class="field" type="number" min="1" max="1440" required></label></div><button class="primary">Ringziele speichern</button><p id="ringMessage" role="status"></p></form></details><p class="notice">Startziele: 8.000 Schritte, 8 Stunden Schlaf, 30 Intensitätsminuten (moderat + intensiv, ohne Doppelgewichtung). Frei wählbar, keine medizinische Empfehlung.</p></section><section id="weeklyReview" class="panel"></section><section class="panel"><h2>Zusammenhänge</h2><div id="insightRows"></div><details id="relationshipMethod"><summary>Was zeigen die Zusammenhänge?</summary><p class="notice">Letzte 90 Kalendertage, mindestens 20 gemeinsame Tage. Schlaf und Tageswerte am gleichen Datum. Zusammenhang bedeutet keine Ursache; Alltag, Training und Messfehler können mitwirken. r reicht von −1 (gegenläufig) über 0 (kein linearer Zusammenhang) bis +1 (gleichläufig). Die Farbe zeigt die Stärke, nicht ob ein Wert gesund ist. Ab |r| = 0,2 schwach, 0,4 mittel, 0,6 stark. Bei konstanten Werten ist r nicht berechenbar.</p></details></section><section id="bodySection" class="panel"><h2>Körperzusammensetzung</h2><div id="bodyCards" class="bodyGrid"></div><p class="notice">Jeweils letzter verfügbarer Waagenwert; Messdaten können von unterschiedlichen Tagen stammen. Trends sind neutral: Mehr oder weniger ist nicht automatisch besser. Körperfett, Muskelmasse, Wasser und Knochenmasse sind Waagenschätzungen, keine unabhängigen Anteile zum Addieren.</p></section><h2>Highlights</h2><div class="hlGrid" id="highlights" role="list"></div><div class="sectionHeading"><h2>Favoriten</h2><button id="editFavorites" class="textButton">Bearbeiten</button></div><div id="favoritesEditor" class="panel hidden"></div><p id="favoritesEmpty" class="notice hidden">Wähle deine Favoriten über Bearbeiten.</p><div class="cards" id="favoritesCards"></div><div id="groups"></div><details><summary>Daten &amp; Datenschutz</summary><p class="notice" id="about"></p></details><p class="notice">Privat · offline · ohne externe Dienste<br>Keine Diagnose oder medizinische Beratung.</p></section><section id="detail" class="hidden"><button class="back" id="back">‹ Zusammenfassung</button><div id="category" class="eyebrow"></div><h1 id="title"></h1><p id="source" class="sub"></p><div class="detailControls"><button id="favoriteDetail" class="softButton" aria-pressed="false">☆ Als Favorit</button><button id="compareButton" class="softButton">Vergleichen</button></div><details id="goalEditor" class="panel goalEditor"><summary>Ziel für diese Kennzahl</summary><form id="goalForm"><label for="goalValue">Zielwert</label><input id="goalValue" type="number" inputmode="decimal" step="any" min="0.001" class="field"><label for="goalDirection">Richtung</label><select id="goalDirection"><option value="min">Mindestens</option><option value="max">Höchstens</option><option value="target">Zielwert erreichen</option></select><button type="submit" class="primary">Ziel speichern</button><button id="removeGoal" type="button" class="softButton">Ziel entfernen</button><p id="goalMessage" role="status"></p><p class="notice">Nur auf diesem Gerät, keine medizinische Empfehlung.</p></form></details><div class="segments" aria-label="Zeitraum"><button data-period="W" aria-label="Woche">W</button><button data-period="M" aria-label="Monat">M</button><button data-period="Q" aria-label="90 Tage">90 T</button><button data-period="J" aria-label="Jahr">J</button></div><button class="softButton" id="smoothToggle" aria-pressed="true">7-Tage-Schnitt</button><p class="notice" id="smoothNote"></p><div class="nav"><button id="prev" aria-label="Vorheriger Zeitraum">‹</button><span class="range" id="range"></span><button id="next" aria-label="Nächster Zeitraum">›</button></div><div class="panel"><div id="selection" class="selected" aria-live="polite">Diagramm antippen</div><svg id="chart" class="chart" viewBox="0 0 340 220" role="img" aria-label="Verlauf; Einzelwerte stehen auch in der Liste"></svg><p class="notice" id="coverage"></p></div><div class="panel stats" id="stats"></div><p class="notice" id="trendNote"></p><h2>Einzelwerte</h2><div class="panel" id="list"></div><p class="notice">Tageswerte, keine stündlichen Messungen. Fehlende Tage bleiben Lücken. Aktuelle Zeiträume sind eventuell unvollständig.</p></section><section id="activitiesView" class="hidden"><button class="back" id="activitiesBack">‹ Zusammenfassung</button><h1>Aktivitäten</h1><p class="sub" id="activitiesSub">Dein Training im Verlauf</p><div class="segments" aria-label="Aktivitäten-Seiten"><button type="button" data-apage="0" aria-pressed="true">Einheiten</button><button type="button" data-apage="1" aria-pressed="false">Trainingsstatus</button></div><div class="pageDots" aria-hidden="true"><span class="on"></span><span></span></div><div class="pager" id="activityPager"><div class="pages" id="activityPages"><div class="page" id="activitiesPage" aria-hidden="false"><label class="filterLabel" for="activityFilter">Sportart filtern</label><select id="activityFilter" class="field"></select><p id="activityCount" class="notice"></p><details class="panel"><summary>Bestwerte im gespeicherten Verlauf</summary><p class="notice">Je Sportart, nur aus den vorhandenen Aktivitäten. Keine bestätigten Lebenszeitrekorde oder Streckenrekorde.</p><div id="personalBests"></div></details><div id="activitiesList"></div></div><div class="page collapsed" id="trainingPage" aria-hidden="true"><div id="trainingRows"></div></div></div></div></section><section id="activityDetail" class="hidden"></section><section id="settings" class="hidden"><button class="back" id="settingsBack">‹ Zusammenfassung</button><h1>Einstellungen</h1><div class="panel"><h2>Privater Zugang</h2><p class="notice" id="rememberStatus"></p><button class="primary" id="changePin">PIN ändern</button><button class="primary" id="logout">Abmelden</button><p class="notice">Abmelden entfernt den gespeicherten Schlüssel von diesem Gerät. Das verschlüsselte Offline-Paket bleibt erhalten. Ein vergessenes Passwort kann hier nicht zurückgesetzt werden.</p></div><div class="panel"><h2>Kurzbefehle</h2><p>In Kurzbefehle: „URL“ hinzufügen, dann „URLs öffnen“.</p><code id="shortcutURL"></code><p class="notice">Öffnet eine kompakte Ansicht im Browser. Erst nach dem Entsperren werden Werte lokal entschlüsselt. Kein echtes iOS-Startbildschirm-Widget und kein öffentlicher JSON-Endpunkt. „Inhalte von URL abrufen“ liefert keine Gesundheitswerte.</p></div><div class="panel"><h2>Daten &amp; App</h2><p id="versionInfo"></p><button class="primary" id="refresh">Nach Aktualisierungen suchen</button><p class="notice">Neue Daten werden online geladen, offline wird der letzte verschlüsselte Stand verwendet. Bei einem neuen Passwort musst du erneut entsperren.</p></div><div class="panel hidden" id="facePanel"><h2>Face ID</h2><div class="toggleRow"><span><strong>Mit Face ID entsperren</strong><small id="faceStatus"></small></span><button type="button" id="faceToggle" class="switch" role="switch" aria-checked="false" aria-label="Face ID aktivieren"><span></span></button></div><button type="button" id="faceSetup" class="primary hidden">Face ID einrichten</button><p id="faceMessage" class="notice" role="status" aria-live="polite"></p><p class="notice">Face ID nutzt einen Passkey dieses Geräts. Der Datenschlüssel wird damit verschlüsselt, zusätzlich zum Geräte-Schlüssel. Der Geräte-Schlüssel bleibt die Standardentsperrung.</p></div></section><section id="compactView" class="hidden"><button id="compactBack" class="back">‹ Zusammenfassung</button><div id="compactContent" class="panel"></div></section><section id="compareView" class="hidden"><button id="compareBack" class="back">‹ Zur Kennzahl</button><h1>Vergleichen</h1><div class="panel compareSelectors"><label>Erste Kennzahl<select id="compareA"></select></label><label>Zweite Kennzahl<select id="compareB"></select></label></div><div class="segments" aria-label="Vergleichszeitraum"><button data-cperiod="W" aria-label="Woche">W</button><button data-cperiod="M" aria-label="Monat">M</button><button data-cperiod="Q" aria-label="90 Tage">90 T</button><button data-cperiod="J" aria-label="Jahr">J</button></div><div class="nav"><button id="comparePrev" aria-label="Vorheriger Vergleichszeitraum">‹</button><span id="compareRange" class="range"></span><button id="compareNext" aria-label="Nächster Vergleichszeitraum">›</button></div><div class="panel"><p id="compareLegend"></p><svg id="compareChart" class="chart" viewBox="0 0 340 220" role="img" aria-label="Zwei auf 0 bis 100 normierte Zeitreihen"></svg><p id="correlation"></p><p id="compareCount" class="notice"></p></div><h2>Gemeinsame Tageswerte</h2><div id="compareList" class="panel"></div></section></div></main>
 <script>
-const APP_VERSION='1.0', APP_BUILD=8.14;
+const APP_VERSION='1.0', APP_BUILD=8.15;
 let DATA=null;
 const colors={'Körpermaße':'var(--body-color)','Aktivität':'var(--activity-color)','Schlaf':'var(--sleep-color)','Herz':'var(--heart-color)'};
 const $=s=>document.querySelector(s), fmt=(n,u)=>formatNumber(n,u), date=s=>new Date(s+'T12:00:00'), iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`, label=s=>date(s).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'});
@@ -9487,7 +9506,7 @@ if(typeof document!=='undefined'){
 
 
 /* Build 8.14 JS */
-/* Build 8.14: ehrlicher Sync-Toast, Punkt nur grün bei Stand von heute, Abruf 8 und 20 Uhr. */
+/* Build 8.14: ehrlicher Sync-Toast, Stand/Punkt/Toast nach fetched_at, Punkt nur grün bei Abruf und Quelldatum von heute. */
 (function(){
  const TZ='Europe/Berlin';
  const MORNING=8*60;
@@ -9535,6 +9554,36 @@ if(typeof document!=='undefined'){
   return {kind, time:b.time, day:b.day, minutes:b.minutes, short, head:'Stand '+short, today:kind==='today'};
  }
 
+ function standStamp(data){
+  if(!data) return null;
+  return data.fetched_at || data.built || null;
+ }
+
+ function lastSourceDay(data, name){
+  let last=null;
+  if(!data) return null;
+  const metrics=data.metrics||[];
+  for(let i=0;i<metrics.length;i++){
+   const pts=(metrics[i]&&metrics[i].points)||[];
+   for(let j=0;j<pts.length;j++){
+    const pt=pts[j];
+    if(!pt||!pt.date||pt.source!==name) continue;
+    if(!last||pt.date>last) last=pt.date;
+   }
+  }
+  return last;
+ }
+
+ function hasSourceToday(data, now){
+  const today=todayStr(now||new Date());
+  if(!today||!data) return false;
+  return lastSourceDay(data,'Garmin')===today || lastSourceDay(data,'Withings')===today;
+ }
+
+ function isFresh(data, now){
+  return isStandToday(standStamp(data), now) && hasSourceToday(data, now);
+ }
+
  function nextUpdate(now, built){
   const n=parts(now||new Date());
   if(!n) return 'heute gegen 8 Uhr';
@@ -9557,12 +9606,15 @@ if(typeof document!=='undefined'){
  function toastText(opts){
   opts=opts||{};
   const now=opts.now||new Date();
-  const rel=standRel(opts.built, now);
+  const stamp=opts.built!=null?opts.built:standStamp(opts.data);
+  const rel=standRel(stamp, now);
   const stand=rel.short;
+  const sourceOk=opts.sourceToday!==false;
+  const fresh=opts.fresh!=null?!!opts.fresh:(rel.kind==='today' && sourceOk);
   if(opts.offline) return 'Offline – letzter Stand '+stand;
   if(opts.kind==='new' || opts.loadedNew) return 'Neue Daten geladen · Stand '+stand;
-  if(rel.kind==='today') return 'Aktuell · Stand '+stand;
-  return 'Keine neueren Daten · letzter Stand '+stand+' · nächstes Update '+nextUpdate(now, opts.built);
+  if(fresh) return 'Aktuell · Stand '+stand;
+  return 'Keine neueren Daten · letzter Stand '+stand+' · nächstes Update '+nextUpdate(now, stamp);
  }
 
  function showToast(msg){
@@ -9591,8 +9643,8 @@ if(typeof document!=='undefined'){
  }
 
  function applyChrome(now){
-  const built=typeof DATA!=='undefined' && DATA?DATA.built:null;
-  const fresh=isStandToday(built, now);
+  const data=typeof DATA!=='undefined'?DATA:null;
+  const fresh=isFresh(data, now);
   const btn=document.getElementById('gcSync');
   const dot=btn&&btn.querySelector('.dot');
   if(dot){
@@ -9631,20 +9683,22 @@ if(typeof document!=='undefined'){
  if(typeof GC89!=='undefined' && GC89 && typeof GC89.dataStatus==='function'){
   const prevStatus=GC89.dataStatus;
   GC89.dataStatus=function(data,today){
-   return polishStatus(prevStatus(data,today), today, new Date());
+   const st=prevStatus(data,today);
+   if(st) st.built=standStamp(data);
+   return polishStatus(st, today, new Date());
   };
  }
 
  if(typeof gc89IsFresh==='function' || true){
   gc89IsFresh=function(){
-   return isStandToday(typeof DATA!=='undefined' && DATA?DATA.built:null, new Date());
+   return isFresh(typeof DATA!=='undefined'?DATA:null, new Date());
   };
  }
 
  if(typeof gc89StandShort==='function' || true){
   gc89StandShort=function(st){
-   if(!st) return '';
-   return standRel(st.built, new Date()).short;
+   const stamp=(st&&(st.fetched_at||st.built))||standStamp(typeof DATA!=='undefined'?DATA:null);
+   return standRel(stamp, new Date()).short;
   };
  }
 
@@ -9660,11 +9714,11 @@ if(typeof document!=='undefined'){
   gc814DoRefresh.busy=true;
   let btn=document.getElementById('gcSync');
   if(btn) btn.classList.add('is-busy');
-  let prevBuilt=DATA&&DATA.built;
+  let prevStamp=standStamp(DATA);
   let prevCipher=(typeof envelope!=='undefined'&&envelope)?envelope.ciphertext:null;
   try{
    if(navigator.onLine===false){
-    showToast(toastText({offline:true, built:DATA&&DATA.built, now:new Date()}));
+    showToast(toastText({offline:true, built:standStamp(DATA), sourceToday:hasSourceToday(DATA), now:new Date()}));
     return;
    }
    if(typeof swReg!=='undefined'&&swReg&&swReg.update){
@@ -9692,10 +9746,10 @@ if(typeof document!=='undefined'){
     await Promise.race([refreshData(true),new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),4000))]);
    }
    try{let sl=document.getElementById('statusLine'); if(sl) sl.textContent='';}catch(e){}
-   let same=(DATA&&DATA.built===prevBuilt)&&(!prevCipher||(typeof envelope!=='undefined'&&envelope&&envelope.ciphertext===prevCipher));
-   showToast(toastText({kind:same?'same':'new', built:DATA&&DATA.built, now:new Date()}));
+   let same=(standStamp(DATA)===prevStamp)&&(!prevCipher||(typeof envelope!=='undefined'&&envelope&&envelope.ciphertext===prevCipher));
+   showToast(toastText({kind:same?'same':'new', built:standStamp(DATA), sourceToday:hasSourceToday(DATA), now:new Date()}));
   }catch(e){
-   showToast(toastText({offline:true, built:DATA&&DATA.built, now:new Date()}));
+   showToast(toastText({offline:true, built:standStamp(DATA), sourceToday:hasSourceToday(DATA), now:new Date()}));
   }finally{
    gc814DoRefresh.busy=false;
    if(btn) btn.classList.remove('is-busy');
@@ -9734,6 +9788,10 @@ if(typeof document!=='undefined'){
    today:todayStr,
    parts,
    standRel,
+   standStamp,
+   lastSourceDay,
+   hasSourceToday,
+   isFresh,
    nextUpdate,
    isStandToday,
    toastText,
@@ -9744,7 +9802,236 @@ if(typeof document!=='undefined'){
   };
  }catch(e){}
 })();
-
 /* /Build 8.14 JS */
+
+
+
+
+
+/* Build 8.15 JS */
+/* Build 8.15: VO₂max Laufen/allgemein vs. Rudern, ohne Multisport-Vermischung. */
+(function(){
+ const RUN_LABEL='VO₂max Laufen/allgemein';
+ const ROW_LABEL='VO₂max Rudern';
+
+ function patchCatalog(){
+  if(!window.GC810||!Array.isArray(GC810.TREND_SPECS)) return;
+  const run=GC810.TREND_SPECS.find(s=>s.id==='vo2run');
+  if(run) run.label=RUN_LABEL;
+  if(!GC810.TREND_SPECS.some(s=>s.id==='vo2row')){
+   const spec={id:'vo2row',label:ROW_LABEL,unit:'',source:'uhr',polarity:'higherBetter',window:90,deadAbs:0.3,estimated:false,home:false,digits:1};
+   const at=GC810.TREND_SPECS.findIndex(s=>s.id==='vo2run');
+   if(at>=0) GC810.TREND_SPECS.splice(at+1,0,spec);
+   else GC810.TREND_SPECS.push(spec);
+  }else{
+   const row=GC810.TREND_SPECS.find(s=>s.id==='vo2row');
+   if(row) row.label=ROW_LABEL;
+  }
+ }
+
+ function relabelNode(el, id){
+  if(!el) return;
+  const want=id==='vo2row'?ROW_LABEL:RUN_LABEL;
+  el.querySelectorAll('b, .name, .label, .gcTrendLab b').forEach(n=>{
+   const t=(n.textContent||'').trim();
+   if(t==='VO₂max'||t==='VO2max'||t==='VO₂max · Laufen / allgemein'||t===RUN_LABEL||t===ROW_LABEL||t==='VO₂max · Rudern'){
+    n.textContent=want;
+   }
+  });
+ }
+
+ function fmtVal(t){
+  if(!t||t.value==null||!Number.isFinite(+t.value)) return '–';
+  const d=t.digits!=null?t.digits:1;
+  if(window.GC810&&GC810.formatDe) return GC810.formatDe(t.value,d);
+  return Number(t.value).toFixed(d).replace('.',',');
+ }
+
+ function spark(points){
+  const pts=(points||[]).filter(p=>p&&p.value!=null);
+  if(pts.length<2) return '';
+  const ys=pts.map(p=>+p.value);
+  const lo=Math.min.apply(null,ys), hi=Math.max.apply(null,ys), span=hi-lo||1;
+  const w=56,h=28,pad=2;
+  const coords=ys.map((v,i)=>{
+   const x=pad+i*(w-2*pad)/Math.max(1,ys.length-1);
+   const y=h-pad-((v-lo)/span)*(h-2*pad);
+   return x.toFixed(1)+','+y.toFixed(1);
+  }).join(' ');
+  return `<span class="gcSparkWrap"><svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" aria-hidden="true"><polyline fill="none" stroke="currentColor" stroke-width="1.6" points="${coords}"/></svg></span>`;
+ }
+
+ function todayStr(){
+  if(window.GC814&&GC814.today) return GC814.today(new Date());
+  try{return new Date().toLocaleDateString('en-CA',{timeZone:'Europe/Berlin'})}
+  catch(e){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+ }
+
+ function vo2Trend(id,label){
+  const m=typeof metricBy==='function'?metricBy(id):null;
+  const pts=((m&&m.points)||[]).filter(p=>p&&p.value!=null&&Number.isFinite(+p.value));
+  if(!pts.length) return null;
+  const last=pts[pts.length-1];
+  const recent=window.GC810?GC810.metricTrend(DATA,id,todayStr(),{window:90}):null;
+  return {
+   id, label:label, value:last.value, date:last.date, digits:1,
+   points:pts,
+   dir:recent&&recent.value!=null?recent.dir:null,
+   tone:recent&&recent.value!=null?recent.tone:'unknown'
+  };
+ }
+
+ function injectPerf(){
+  const root=document.getElementById('gcPerfHub');
+  if(!root||!DATA||!window.GC810) return;
+  let card=document.getElementById('gcPerfTrends');
+  if(!card){
+   card=document.createElement('section');
+   card.id='gcPerfTrends';
+   card.className='gcCard gcHubCard';
+   const title=root.querySelector('.gcPageTitle');
+   if(title) title.after(card); else root.prepend(card);
+  }
+  const ids=['vo2run','vo2row','load'].filter(id=>typeof metricBy==='function'&&metricBy(id));
+  const rows=ids.map(id=>{
+   const label=id==='vo2run'?RUN_LABEL:id==='vo2row'?ROW_LABEL:null;
+   const t=label?vo2Trend(id,label):(GC810.metricTrend(DATA,id,todayStr(),{})||null);
+   if(!t||t.value==null) return '';
+   const lab=label||t.label||id;
+   return `<button type="button" class="gcTrendRow" data-open-metric="${id}" aria-label="${lab} ${fmtVal(t)}">
+     <span class="gcTrendLab"><b>${lab}</b><small>Uhr</small></span>
+     ${spark(t.points)}
+     <span class="gcTrendVal">${fmtVal(t)}</span>
+    </button>`;
+  }).join('');
+  card.innerHTML=`<div class="gcTodayHead"><span class="gcKicker">Überblick</span><span class="gcSrcLab">Uhr</span></div>
+   <div class="gcTrendList">${rows}</div>
+   <p class="gcHint">Pfeile zeigen die Lage zum 28-Tage-Mittel, bei VO₂max zum 90-Tage-Mittel. Geschätzte Richtung, keine Leistungsbewertung. Laufen/allgemein nur an Tagen mit einer Laufeinheit.</p>`;
+  card.querySelectorAll('[data-open-metric]').forEach(b=>{
+   b.addEventListener('click',()=>{
+    const m=typeof metricBy==='function'?metricBy(b.dataset.openMetric):null;
+    if(m&&typeof open==='function') open(m);
+   });
+  });
+ }
+
+ function relabelEverywhere(root){
+  root=root||document;
+  root.querySelectorAll('[data-open-metric="vo2run"]').forEach(el=>relabelNode(el,'vo2run'));
+  root.querySelectorAll('[data-open-metric="vo2row"]').forEach(el=>relabelNode(el,'vo2row'));
+  const title=document.getElementById('title');
+  if(title&&typeof metric!=='undefined'&&metric){
+   if(metric.id==='vo2run' && /VO₂max|VO2max/.test(title.textContent||'')) title.textContent=RUN_LABEL;
+   if(metric.id==='vo2row' && /VO₂max|VO2max/.test(title.textContent||'')) title.textContent=ROW_LABEL;
+  }
+ }
+
+ function formatDe(iso){
+  if(!iso) return '';
+  const p=String(iso).slice(0,10).split('-');
+  if(p.length!==3) return iso;
+  return p[2]+'.'+p[1]+'.'+p[0];
+ }
+
+ function omittedFor(m){
+  if(!m) return [];
+  if(Array.isArray(m.omitted)&&m.omitted.length) return m.omitted;
+  try{
+   const src=(DATA.metrics||[]).find(x=>x.id===m.id);
+   if(src&&Array.isArray(src.omitted)) return src.omitted;
+  }catch(e){}
+  return [];
+ }
+
+ function showOmitted(){
+  let box=document.getElementById('gcVo2Omitted');
+  const m=typeof metric!=='undefined'?metric:null;
+  const omitted=omittedFor(m);
+  if(!m||!omitted.length){
+   if(box) box.remove();
+   return;
+  }
+  if(!box){
+   box=document.createElement('p');
+   box.id='gcVo2Omitted';
+   box.className='notice gcHint';
+  }
+  const bits=omitted.map(p=>{
+   const val=typeof formatNumber==='function'?formatNumber(p.value,'ml/kg/min'):String(p.value).replace('.',',');
+   return val+' am '+formatDe(p.date)+(p.reason?': '+p.reason:'');
+  });
+  box.textContent=bits.join(' ').replace(/\bGarmin-?/g,'').replace(/  +/g,' ').replace('allgemeines VO₂max','allgemeines VO₂max').trim();
+  const sum=document.getElementById('detailSummary');
+  const note=sum&&sum.querySelector('.gc813Note');
+  if(note&&note.parentNode) note.parentNode.insertBefore(box, note.nextSibling);
+  else if(sum) sum.append(box);
+  else {
+   const host=document.getElementById('detail');
+   if(host) host.append(box);
+  }
+ }
+
+ function ensureRowLink(){
+  const root=document.getElementById('gcPerfHub');
+  if(!root||typeof metricBy!=='function'||!metricBy('vo2row')) return;
+  const run=root.querySelector('.gcSettingsList [data-open-metric="vo2run"], .gcListRow[data-open-metric="vo2run"]');
+  if(!run||run.parentNode.querySelector('[data-open-metric="vo2row"]')) return;
+  const neu=run.cloneNode(true);
+  neu.setAttribute('data-open-metric','vo2row');
+  const name=neu.querySelector('.name, b');
+  if(name) name.textContent=ROW_LABEL;
+  neu.addEventListener('click',ev=>{
+   ev.preventDefault();
+   const m=metricBy('vo2row');
+   if(m&&typeof open==='function') open(m);
+  });
+  run.after(neu);
+ }
+
+ if(window.GC810&&typeof GC810.buildInsights==='function'){
+  const prev=GC810.buildInsights;
+  GC810.buildInsights=function(data,day,computed,opts){
+   const out=prev(data,day,computed,opts)||[];
+   return out.map(it=>{
+    if(it&&it.id==='vo2-weight'&&it.text&&!/Laufen\/allgemein/.test(it.text)){
+     return Object.assign({},it,{text:it.text.replace('Die VO₂max ','Die VO₂max (Laufen/allgemein) ')});
+    }
+    return it;
+   });
+  };
+ }
+
+ patchCatalog();
+
+ if(typeof renderPerfHub==='function'){
+  const prev=renderPerfHub;
+  renderPerfHub=function(){ prev(); try{injectPerf(); ensureRowLink(); relabelEverywhere();}catch(e){} };
+ }
+ if(typeof renderHealthHub==='function'){
+  const prev=renderHealthHub;
+  renderHealthHub=function(){ prev(); try{relabelEverywhere(document.getElementById('gcHealthHub'));}catch(e){} };
+ }
+ if(typeof render==='function'){
+  const prev=render;
+  render=function(){ prev(); try{relabelEverywhere(); showOmitted(); requestAnimationFrame(showOmitted); setTimeout(showOmitted,80);}catch(e){} };
+ }
+ if(typeof overview==='function'){
+  const prev=overview;
+  overview=function(){ prev(); try{relabelEverywhere();}catch(e){} };
+ }
+
+ try{
+  window.GC815={
+   runLabel:RUN_LABEL,
+   rowLabel:ROW_LABEL,
+   injectPerf,
+   relabelEverywhere,
+   showOmitted,
+   formatDe
+  };
+ }catch(e){}
+})();
+
+/* /Build 8.15 JS */
 try{start()}catch(e){}
 </script></html>
