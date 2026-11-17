@@ -1,6 +1,6 @@
 'use strict';
 (() => {
-const APP_VERSION = '2.3';
+const APP_VERSION = '2.4';
 // Im Test-Repo direkt das laufend aktualisierte Datenpaket der bisherigen App lesen
 const DATA_URL = location.pathname.startsWith('/gesundheit-neu/') ? '/gesundheit-app/data.enc.json' : 'data.enc.json';
 const PREVIEW = !!window.GESUNDHEIT_PREVIEW;
@@ -47,8 +47,9 @@ const M = id => DATA.metrics.find(m => m.id === id);
 const idx = m => DATA.metrics.indexOf(m);
 const last = m => m?.points.at(-1);
 const pts = (m, from, to) => m.points.filter(p => p.date >= from && p.date <= to);
-const GOAL_DEFAULT = { steps: 8000, sleep: 7.5, intensity: 22 };
-const goalFor = id => id in GOAL_DEFAULT ? store.get('goal-' + id, GOAL_DEFAULT[id]) : null;
+// Intensität wird als Wochenziel geführt (Empfehlung: 150 min); in Tagesgrafiken gilt ein Siebtel davon.
+const GOAL_DEFAULT = { steps: 8000, sleep: 7.5, intensityWeek: 150 };
+const goalFor = id => id === 'intensity' ? store.get('goal-intensityWeek', GOAL_DEFAULT.intensityWeek) / 7 : id in GOAL_DEFAULT ? store.get('goal-' + id, GOAL_DEFAULT[id]) : null;
 
 function prepare(d) {
   d.metrics = d.metrics.filter(m => m && Array.isArray(m.points));
@@ -160,6 +161,10 @@ function viewHeute() {
   if (rings.length) {
     h += `<section class="card rings" style="grid-template-columns:repeat(${rings.length},1fr)">` + rings.map(([m, label, id]) => {
       const p = last(m), g = goalFor(id);
+      if (id === 'intensity') {
+        const sum = pts(m, shift(p.date, -6), p.date).reduce((a, x) => a + x.value, 0), wg = store.get('goal-intensityWeek', GOAL_DEFAULT.intensityWeek);
+        return ring(cc(m), label, sum / wg, fmt(sum, 'min'), 'letzte 7 Tage', 'm-' + idx(m));
+      }
       return ring(cc(m), label, p.value / g, fmt(p.value, m.unit === 'Schritte' ? '' : m.unit), rel(p.date), 'm-' + idx(m));
     }).join('') + '</section>';
   }
@@ -288,7 +293,7 @@ function viewMehr() {
 <section class="sec"><div class="secHead"><h2>Tagesziele</h2></div><form class="card form" id="goalForm">
 <label for="goal-steps">Schritte pro Tag<input id="goal-steps" type="number" inputmode="numeric" min="1000" max="60000" step="500" value="${g('steps')}"></label>
 <label for="goal-sleep">Schlaf in Stunden<input id="goal-sleep" type="number" inputmode="decimal" min="4" max="12" step="0.25" value="${g('sleep')}"></label>
-<label for="goal-intensity">Intensitätsminuten pro Tag<input id="goal-intensity" type="number" inputmode="numeric" min="5" max="180" step="1" value="${g('intensity')}"></label>
+<label for="goal-intensityWeek">Intensitätsminuten pro Woche<input id="goal-intensityWeek" type="number" inputmode="numeric" min="30" max="1500" step="10" value="${g('intensityWeek')}"></label>
 </form></section>
 <section class="sec"><div class="secHead"><h2>Daten</h2></div><div class="card stack">
 <p>${IS_DEMO ? 'Du siehst erfundene Beispieldaten.' : `Stand ${built && !isNaN(built) ? built.toLocaleString('de-DE', { dateStyle: 'long', timeStyle: 'short' }) : fmtDate(TODAY, { dateStyle: 'long' })}`}</p>
@@ -333,8 +338,8 @@ document.addEventListener('click', ev => {
   else if (t.id === 'refreshBtn') refresh();
 });
 document.addEventListener('change', ev => {
-  const m = /^goal-(steps|sleep|intensity)$/.exec(ev.target.id || ''); if (!m) return;
-  const v = parseFloat(ev.target.value); if (Number.isFinite(v) && v > 0) store.set('goal-' + m[1], v); else ev.target.value = goalFor(m[1]);
+  const m = /^goal-(steps|sleep|intensityWeek)$/.exec(ev.target.id || ''); if (!m) return;
+  const v = parseFloat(ev.target.value); if (Number.isFinite(v) && v > 0) store.set('goal-' + m[1], v); else ev.target.value = store.get('goal-' + m[1], GOAL_DEFAULT[m[1]]);
 });
 document.addEventListener('submit', ev => { if (ev.target.id === 'goalForm') ev.preventDefault(); });
 window.addEventListener('hashchange', route);
