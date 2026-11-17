@@ -1,6 +1,6 @@
 'use strict';
 (() => {
-const APP_VERSION = '2.1';
+const APP_VERSION = '2.2';
 const DATA_URL = 'data.enc.json';
 const PREVIEW = !!window.GESUNDHEIT_PREVIEW;
 
@@ -52,7 +52,8 @@ const goalFor = id => id in GOAL_DEFAULT ? store.get('goal-' + id, GOAL_DEFAULT[
 function prepare(d) {
   d.metrics = d.metrics.filter(m => m && Array.isArray(m.points));
   for (const m of d.metrics) m.points = m.points.filter(p => p && typeof p.date === 'string' && Number.isFinite(p.value)).sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
-  d.activities = (d.activities || []).filter(a => a && typeof a.date === 'string').sort((a, b) => (b.date + (b.time || '')).localeCompare(a.date + (a.time || '')));
+  // Leere Einträge (0 Minuten, keine Distanz) ausblenden, z. B. in Connect gelöschte Aktivitäten
+  d.activities = (d.activities || []).filter(a => a && typeof a.date === 'string' && (a.durationMinutes > 0 || a.distanceKm > 0)).sort((a, b) => (b.date + (b.time || '')).localeCompare(a.date + (a.time || '')));
   let max = '';
   for (const m of d.metrics) { const p = m.points.at(-1); if (p && p.date > max) max = p.date; }
   TODAY = (max || iso(new Date())).slice(0, 10);
