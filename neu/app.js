@@ -1,6 +1,6 @@
 'use strict';
 (() => {
-const APP_VERSION = '2.0';
+const APP_VERSION = '2.1';
 const DATA_URL = 'data.enc.json';
 const PREVIEW = !!window.GESUNDHEIT_PREVIEW;
 
@@ -37,8 +37,9 @@ const dur = min => { const t = Math.round(min || 0); return t < 60 ? `${t} min` 
 
 /* ---------- Datenmodell ---------- */
 let DATA = null, TODAY = null, IS_DEMO = false, sessionKey = null;
-const CAT = { 'Körpermaße': 'body', 'Aktivität': 'activity', 'Schlaf': 'sleep', 'Herz': 'heart' };
-const cc = m => 'c-' + (CAT[m?.category] || 'accent');
+const CAT = { 'Körpermaße': 'teal', 'Aktivität': 'orange', 'Schlaf': 'indigo', 'Herz': 'red' };
+const HUE = { steps: 'green', distance: 'cyan', intensity: 'orange', energy: 'pink', vo2run: 'cyan', vo2row: 'blue', load: 'amber', chronic: 'orange', acwr: 'violet', sleep: 'indigo', score: 'violet', rest: 'red', hrv: 'blue', stress: 'amber', bbhigh: 'green', bblow: 'teal', bbcharged: 'green', ready: 'teal', weight: 'teal', fat: 'amber', muscle: 'blue', pwv: 'pink' };
+const cc = m => 'c-' + (HUE[m?.id] || CAT[m?.category] || 'blue');
 // +1: höher ist besser, -1: niedriger ist besser
 const GOOD = { hrv: 1, rest: -1, sleep: 1, score: 1, stress: -1, vo2run: 1, vo2row: 1, steps: 1, bbhigh: 1, bbcharged: 1, ready: 1 };
 const M = id => DATA.metrics.find(m => m.id === id);
@@ -68,7 +69,7 @@ function deltaHTML(m) {
   const v = versus(m); if (!v) return '';
   if (Math.abs(v.pct) < 2) return '<span class="delta">im Schnitt</span>';
   const dir = GOOD[m.id], cls = dir ? ((v.pct > 0) === (dir > 0) ? 'good' : 'bad') : '';
-  return `<span class="delta ${cls}">${v.pct > 0 ? '+' : '−'}${nf(Math.abs(v.pct), 0, 0)} %</span>`;
+  return `<span class="delta ${cls}">${v.pct > 0 ? '▲' : '▼'} ${nf(Math.abs(v.pct), 0, 0)} %</span>`;
 }
 
 /* ---------- Grafik ---------- */
@@ -104,7 +105,7 @@ function chart(m, from, to, opt = {}) {
   const span = Math.max(1, days - 1);
   const X = p => L + (bar ? (dayDiff(p.date, from) + .5) / days : dayDiff(p.date, from) / span) * pw;
   const Y = v => T + (1 - (v - lo) / (hi - lo)) * ph;
-  let s = '';
+  let s = '<defs><linearGradient id="chartArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--c);stop-opacity:.38"/><stop offset="1" style="stop-color:var(--c);stop-opacity:0"/></linearGradient><linearGradient id="chartBar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--c2)"/><stop offset="1" style="stop-color:var(--c)"/></linearGradient></defs>';
   for (const t of [0, .5, 1]) {
     const v = hi - t * (hi - lo), y = T + t * ph;
     s += `<line class="grid" x1="${L}" x2="${L + pw}" y1="${y}" y2="${y}"/><text x="${L + pw + 6}" y="${y + 4}">${parts(v, m.unit).v}</text>`;
@@ -112,10 +113,10 @@ function chart(m, from, to, opt = {}) {
   if (goal != null) s += `<line class="goalLine" x1="${L}" x2="${L + pw}" y1="${Y(goal)}" y2="${Y(goal)}"/>`;
   if (bar) {
     const slots = wk ? days / 7 : days, bw = Math.max(2, Math.min(20, pw / slots * .68));
-    s += '<g class="bars">' + P.map(p => `<rect x="${(X(p) - bw / 2).toFixed(1)}" y="${Y(p.value).toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(1, T + ph - Y(p.value)).toFixed(1)}" rx="${Math.min(3, bw / 2)}"/>`).join('') + '</g>';
+    s += '<g class="bars" style="fill:url(#chartBar)">' + P.map(p => `<rect x="${(X(p) - bw / 2).toFixed(1)}" y="${Y(p.value).toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(1, T + ph - Y(p.value)).toFixed(1)}" rx="${Math.min(3, bw / 2)}"/>`).join('') + '</g>';
   } else {
     const d = P.map((p, i) => `${i ? 'L' : 'M'}${X(p).toFixed(1)} ${Y(p.value).toFixed(1)}`).join('');
-    if (P.length > 1) s += `<path class="area" d="${d}L${X(P.at(-1)).toFixed(1)} ${T + ph}L${X(P[0]).toFixed(1)} ${T + ph}Z"/><path class="ln" d="${d}"/>`;
+    if (P.length > 1) s += `<path class="area" style="fill:url(#chartArea)" d="${d}L${X(P.at(-1)).toFixed(1)} ${T + ph}L${X(P[0]).toFixed(1)} ${T + ph}Z"/><path class="ln" d="${d}"/>`;
     if (opt.avg && P.length > 6) { const A = movingAvg(P); s += `<path class="avg" d="${A.map((p, i) => `${i ? 'L' : 'M'}${X(p).toFixed(1)} ${Y(p.value).toFixed(1)}`).join('')}"/>`; }
     const e = P.at(-1); s += `<circle class="end" cx="${X(e).toFixed(1)}" cy="${Y(e.value).toFixed(1)}" r="4.5"/>`;
   }
@@ -141,7 +142,7 @@ function bindScrub(m, onPick, onReset) {
 }
 function ring(cls, label, pct, value, sub, go) {
   const r = 34, c = 2 * Math.PI * r, p = Math.max(0, Math.min(1, pct || 0));
-  return `<button class="ring ${cls}" data-go="${go}"><svg viewBox="0 0 84 84" aria-hidden="true"><circle class="track" cx="42" cy="42" r="${r}"/><circle class="prog" cx="42" cy="42" r="${r}" stroke-dasharray="${(c * p).toFixed(1)} ${c.toFixed(1)}"/><text x="42" y="48" text-anchor="middle">${Math.round((pct || 0) * 100)}%</text></svg><span class="lbl">${esc(label)}</span><span class="val">${value}</span><span class="sub">${esc(sub)}</span></button>`;
+  return `<button class="ring ${cls}" data-go="${go}"><svg viewBox="0 0 84 84" aria-hidden="true"><circle class="track" cx="42" cy="42" r="${r}"/><defs><linearGradient id="rg-${go}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--c2)"/><stop offset="1" style="stop-color:var(--c)"/></linearGradient></defs><circle class="prog" style="stroke:url(#rg-${go})" cx="42" cy="42" r="${r}" stroke-dasharray="${(c * p).toFixed(1)} ${c.toFixed(1)}"/><text x="42" y="48" text-anchor="middle">${Math.round((pct || 0) * 100)}%</text></svg><span class="lbl">${esc(label)}</span><span class="val">${value}</span><span class="sub">${esc(sub)}</span></button>`;
 }
 const CHEV = '<svg class="chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6"/></svg>';
 function metricRow(m, days = 30) {
@@ -165,7 +166,7 @@ function viewHeute() {
   if (steps && last(steps)) {
     const g = goalFor('steps'), days = [...Array(7)].map((_, i) => shift(TODAY, i - 6)), byDay = new Map(steps.points.map(p => [p.date, p.value]));
     const vals = days.map(d => byDay.get(d)), have = vals.filter(Number.isFinite), top = Math.max(g, ...have, 1) * 1.08, hits = have.filter(v => v >= g).length;
-    h += `<section class="sec c-activity"><div class="secHead"><h2>Diese Woche</h2><small>Ziel an ${hits} von ${have.length} Tagen</small></div><button class="card tile" data-go="m-${idx(steps)}"><div class="big"><b>${nf(mean(have) || 0, 0, 0)}</b><span>Schritte im Schnitt</span></div><div class="week">${days.map((d, i) => { const v = vals[i]; return `<div class="col${d === TODAY ? ' today' : ''}"><div class="bar${Number.isFinite(v) ? (v >= g ? ' hit' : '') : ' none'}" style="height:${Number.isFinite(v) ? Math.max(3, v / top * 86) : 3}px"></div><span class="d">${fmtDate(d, { weekday: 'narrow' })}</span></div>`; }).join('')}<div class="goal" style="bottom:${(24 + g / top * 86).toFixed(0)}px"></div></div></button></section>`;
+    h += `<section class="sec ${cc(steps)}"><div class="secHead"><h2>Diese Woche</h2><small>Ziel an ${hits} von ${have.length} Tagen</small></div><button class="card tile" data-go="m-${idx(steps)}"><div class="big"><b>${nf(mean(have) || 0, 0, 0)}</b><span>Schritte im Schnitt</span></div><div class="week">${days.map((d, i) => { const v = vals[i]; return `<div class="col${d === TODAY ? ' today' : ''}"><div class="bar${Number.isFinite(v) ? (v >= g ? ' hit' : '') : ' none'}" style="height:${Number.isFinite(v) ? Math.max(3, v / top * 86) : 3}px"></div><span class="d">${fmtDate(d, { weekday: 'narrow' })}</span></div>`; }).join('')}<div class="goal" style="bottom:${(24 + g / top * 86).toFixed(0)}px"></div></div></button></section>`;
   }
   const a = DATA.activities[0];
   if (a) h += `<section class="sec"><div class="secHead"><h2>Letztes Training</h2></div><div class="list">${actRow(a, 0)}</div></section>`;
@@ -192,7 +193,7 @@ function viewMetric(m) {
   const stat = (l, v) => `<div class="stat"><span>${l}</span>${v}</div>`;
   const src = [...new Set(m.points.map(x => x.source).filter(Boolean))].join(' · ');
   return `<button class="back" data-back><svg viewBox="0 0 10 16" aria-hidden="true"><path d="M8 1L2 8l6 7"/></svg>Zurück</button>
-<header class="head ${cc(m)}"><p class="eyebrow" style="color:var(--c)">${esc(m.category || '')}</p><h1>${esc(m.name)}</h1></header>
+<header class="head ${cc(m)}"><p class="eyebrow tint">${esc(m.category || '')}</p><h1>${esc(m.name)}</h1></header>
 <section class="card sec ${cc(m)}"><div><div class="big" id="selVal">${p ? bigHTML(p.value, m.unit) : '<b>–</b>'}</div><p class="muted" id="selDate" style="font-size:14px">${p ? selLabel(p.date) : 'Keine Daten'}</p></div>${c.html}<div class="seg" role="group" aria-label="Zeitraum">${RANGES.map(([l, n]) => `<button data-range="${n}" aria-pressed="${n === range}">${l}</button>`).join('')}</div>${c.wk ? '<p class="note">Bei langen Zeiträumen zeigt die Grafik Wochenmittel.</p>' : ''}</section>
 <section class="card stats">${stat('Durchschnitt', valHTML(avg, m.unit))}${stat('Veränderung', ch == null ? '<b>–</b>' : `<b>${ch > 0 ? '+' : '−'}${nf(Math.abs(ch), 0, 1)}<small>% zum Zeitraum davor</small></b>`)}${stat('Niedrigster', valHTML(vals.length ? Math.min(...vals) : NaN, m.unit))}${stat('Höchster', valHTML(vals.length ? Math.max(...vals) : NaN, m.unit))}${g != null ? stat('Dein Ziel', valHTML(g, m.unit)) : ''}${stat('Messwerte', `<b>${nf(pts(m, from, end).length, 0, 0)}</b>`)}</section>
 ${src ? `<p class="note">Quelle: ${esc(src)}</p>` : ''}`;
@@ -212,7 +213,8 @@ const GLYPH = {
 function glyph(a) {
   const k = String(a.sportKey || a.sport || '').toLowerCase();
   const g = /run|lauf/.test(k) ? 'run' : /cycl|bik|rad/.test(k) ? 'bike' : /hik|walk|wander|geh|ski|mountain/.test(k) ? 'hike' : /strength|kraft|gym|training/.test(k) ? 'gym' : /row|swim|ruder|schwimm|paddl|kayak/.test(k) ? 'water' : 'other';
-  return `<span class="glyph"><svg viewBox="0 0 24 24" aria-hidden="true">${GLYPH[g]}</svg></span>`;
+  const hue = { run: 'orange', bike: 'green', hike: 'teal', gym: 'violet', water: 'blue', other: 'pink' }[g];
+  return `<span class="glyph c-${hue}"><svg viewBox="0 0 24 24" aria-hidden="true">${GLYPH[g]}</svg></span>`;
 }
 function actRow(a, i) {
   const chips = [dur(a.durationMinutes)];
@@ -270,7 +272,7 @@ function viewBody() {
   const p = last(w), from = shift(p.date, -89), c = chart(w, from, p.date, { avg: true });
   const now = mean(pts(w, shift(p.date, -6), p.date).map(x => x.value));
   const ago = n => { const v = mean(pts(w, shift(p.date, -n - 6), shift(p.date, -n)).map(x => x.value)); return v == null ? '<b>–</b>' : `<b>${now - v > 0 ? '+' : '−'}${nf(Math.abs(now - v), 1, 1)}<small>${esc(w.unit)}</small></b>`; };
-  h += `<section class="card sec ${cc(w)}"><div><p class="eyebrow" style="color:var(--c)">${esc(w.name)}</p><div class="big" id="selVal">${bigHTML(p.value, w.unit)}</div><p class="muted" id="selDate" style="font-size:14px">${selLabel(p.date)}</p></div>${c.html}<p class="note">Gepunktete Linie: Mittel über 7 Tage. Letzte 90 Tage.</p><div class="stats"><div class="stat"><span>In 30 Tagen</span>${ago(30)}</div><div class="stat"><span>In 90 Tagen</span>${ago(90)}</div></div></section>`;
+  h += `<section class="card sec ${cc(w)}"><div><p class="eyebrow tint">${esc(w.name)}</p><div class="big" id="selVal">${bigHTML(p.value, w.unit)}</div><p class="muted" id="selDate" style="font-size:14px">${selLabel(p.date)}</p></div>${c.html}<p class="note">Gepunktete Linie: Mittel über 7 Tage. Letzte 90 Tage.</p><div class="stats"><div class="stat"><span>In 30 Tagen</span>${ago(30)}</div><div class="stat"><span>In 90 Tagen</span>${ago(90)}</div></div></section>`;
   const rest = body.filter(m => m !== w);
   h += `<section class="sec"><div class="secHead"><h2>Zusammensetzung</h2></div><div class="list">${[w, ...rest].map(m => metricRow(m, 90)).join('')}</div></section>`;
   return h;
