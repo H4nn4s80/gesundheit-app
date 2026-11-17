@@ -1,7 +1,8 @@
 'use strict';
 (() => {
-const APP_VERSION = '2.2';
-const DATA_URL = 'data.enc.json';
+const APP_VERSION = '2.3';
+// Im Test-Repo direkt das laufend aktualisierte Datenpaket der bisherigen App lesen
+const DATA_URL = location.pathname.startsWith('/gesundheit-neu/') ? '/gesundheit-app/data.enc.json' : 'data.enc.json';
 const PREVIEW = !!window.GESUNDHEIT_PREVIEW;
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -291,7 +292,8 @@ function viewMehr() {
 </form></section>
 <section class="sec"><div class="secHead"><h2>Daten</h2></div><div class="card stack">
 <p>${IS_DEMO ? 'Du siehst erfundene Beispieldaten.' : `Stand ${built && !isNaN(built) ? built.toLocaleString('de-DE', { dateStyle: 'long', timeStyle: 'short' }) : fmtDate(TODAY, { dateStyle: 'long' })}`}</p>
-<p class="note">${nf(DATA.metrics.length, 0, 0)} Kennzahlen, ${nf(DATA.activities.length, 0, 0)} Aktivitäten. ${esc((DATA.notes || []).join(' '))}</p>
+<p class="note">${nf(DATA.metrics.length, 0, 0)} Kennzahlen, ${nf(DATA.activities.length, 0, 0)} Aktivitäten.</p>
+${(DATA.notes || []).length ? `<details class="notes"><summary>Hinweise zu den Daten</summary><p class="note">${esc(DATA.notes.join(' '))}</p></details>` : ''}
 ${IS_DEMO ? '' : '<button class="btn" id="refreshBtn">Neue Daten laden</button>'}<p class="note" id="refreshMsg" role="status"></p></div></section>
 <section class="sec"><div class="secHead"><h2>Zugang</h2></div><div class="card stack">
 <p class="note">${IS_DEMO ? 'Im Beispielmodus wird nichts gespeichert oder geladen.' : 'Die Werte werden nur auf diesem Gerät entschlüsselt. Beim Abmelden wird der gespeicherte Schlüssel gelöscht.'}</p>
