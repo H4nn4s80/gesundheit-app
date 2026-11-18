@@ -2,8 +2,9 @@
 """Ein Export-Lauf: Datenpaket öffnen, Garmin und Withings abrufen, einmischen, prüfen, neu verschlüsseln.
 
 Ausgabe: genau eine Statuszeile ohne Messwerte, Token oder Rohfehler (das Protokoll ist öffentlich einsehbar).
-Umgebung: HEALTH_APP_PASSWORD, STATE_KEY, WITHINGS_CLIENT_ID, WITHINGS_CLIENT_SECRET;
-nur für den ersten Lauf zusätzlich GARMIN_TOKENS und WITHINGS_REFRESH_TOKEN.
+Umgebung: HEALTH_APP_PASSWORD, STATE_KEY und ZUGANGSDATEN (die Übergabedatei als JSON mit garmin_tokens_json,
+withings_client_id, withings_client_secret, withings_refresh_token). Statt ZUGANGSDATEN gehen auch die Einzelwerte
+GARMIN_TOKENS, WITHINGS_CLIENT_ID, WITHINGS_CLIENT_SECRET, WITHINGS_REFRESH_TOKEN.
 """
 import json, os, sys
 from datetime import datetime
@@ -25,6 +26,24 @@ def write_json(path, obj):
     tmp = path.with_suffix(path.suffix + '.tmp')
     tmp.write_text(json.dumps(obj, separators=(',', ':')))
     tmp.replace(path)
+
+
+def credentials():
+    """Zugangsdaten aus ZUGANGSDATEN (ganze Übergabedatei) oder aus den Einzelwerten."""
+    c = {'garmin': os.environ.get('GARMIN_TOKENS', '').strip(), 'withings_refresh': os.environ.get('WITHINGS_REFRESH_TOKEN', '').strip(),
+         'cid': os.environ.get('WITHINGS_CLIENT_ID', '').strip(), 'secret': os.environ.get('WITHINGS_CLIENT_SECRET', '').strip()}
+    blob = os.environ.get('ZUGANGSDATEN', '').strip()
+    if blob:
+        try:
+            j = json.loads(blob)
+        except Exception:
+            raise RuntimeError('zugangsdaten_invalid') from None
+        g = j.get('garmin_tokens_json')
+        c['garmin'] = c['garmin'] or (json.dumps(g) if isinstance(g, dict) else str(g or '').strip())
+        c['withings_refresh'] = c['withings_refresh'] or str(j.get('withings_refresh_token') or '').strip()
+        c['cid'] = c['cid'] or str(j.get('withings_client_id') or '').strip()
+        c['secret'] = c['secret'] or str(j.get('withings_client_secret') or '').strip()
+    return c
 
 
 def counts(data):
@@ -54,6 +73,7 @@ def main():
         except Exception:
             raise RuntimeError('password_mismatch') from None
         before_hash, before = digest(data), counts(data)
+        cred = credentials()
 
         if STATE_PATH.exists() and os.environ.get('BOOTSTRAP') != '1':
             try:
@@ -61,7 +81,7 @@ def main():
             except Exception:
                 raise RuntimeError('state_key_mismatch') from None
         else:
-            state = {'garmin': os.environ.get('GARMIN_TOKENS', '').strip(), 'withings_refresh': os.environ.get('WITHINGS_REFRESH_TOKEN', '').strip()}
+            state = {'garmin': cred['garmin'], 'withings_refresh': cred['withings_refresh']}
             info['bootstrap'] = True
 
         now = datetime.now(TZ)
@@ -75,7 +95,7 @@ def main():
             write_json(STATE_PATH, crypto.seal_state(state, state_key))
         else:
             info['providers']['garmin'] = {'status': 'no_token'}
-        cid, secret = os.environ.get('WITHINGS_CLIENT_ID', ''), os.environ.get('WITHINGS_CLIENT_SECRET', '')
+        cid, secret = cred['cid'], cred['secret']
         if state.get('withings_refresh') and cid and secret:
             withings_raw, rep, state['withings_refresh'] = sources.fetch_withings(cid, secret, state['withings_refresh'], end)
             info['providers']['withings'] = rep

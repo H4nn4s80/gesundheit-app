@@ -12,7 +12,7 @@ on:
         type: boolean
         default: false
       neu_einrichten:
-        description: 'Zugangstoken neu aus den Secrets lesen (nach dem Erneuern von GARMIN_TOKENS oder WITHINGS_REFRESH_TOKEN)'
+        description: 'Zugangstoken neu aus den Secrets lesen (nach dem Erneuern des Secrets ZUGANGSDATEN)'
         type: boolean
         default: false
 
@@ -61,6 +61,7 @@ jobs:
         env:
           HEALTH_APP_PASSWORD: ${{ secrets.HEALTH_APP_PASSWORD }}
           STATE_KEY: ${{ secrets.STATE_KEY }}
+          ZUGANGSDATEN: ${{ secrets.ZUGANGSDATEN }}
           GARMIN_TOKENS: ${{ secrets.GARMIN_TOKENS }}
           WITHINGS_CLIENT_ID: ${{ secrets.WITHINGS_CLIENT_ID }}
           WITHINGS_CLIENT_SECRET: ${{ secrets.WITHINGS_CLIENT_SECRET }}

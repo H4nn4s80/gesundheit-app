@@ -18,10 +18,8 @@ Die Zugangstoken beider Anbieter erneuern sich bei der Nutzung. Ihr aktueller St
 |---|---|
 | `HEALTH_APP_PASSWORD` | Passwort der App |
 | `STATE_KEY` | langer Zufallswert (mindestens 32 Zeichen), schützt die Token-Datei |
-| `GARMIN_TOKENS` | Inhalt von `garmin_tokens.json` (nur für den ersten Lauf) |
-| `WITHINGS_CLIENT_ID`, `WITHINGS_CLIENT_SECRET` | Withings-Entwickler-App |
-| `WITHINGS_REFRESH_TOKEN` | Withings Refresh-Token (nur für den ersten Lauf) |
+| `ZUGANGSDATEN` | die Übergabedatei als Ganzes (JSON mit `garmin_tokens_json`, `withings_client_id`, `withings_client_secret`, `withings_refresh_token`) |
 
-Nach dem Erneuern von `GARMIN_TOKENS` oder `WITHINGS_REFRESH_TOKEN` den Workflow einmal von Hand mit „Zugangstoken neu aus den Secrets lesen“ starten.
+Garmin- und Withings-Refresh-Token aus `ZUGANGSDATEN` werden nur beim ersten Lauf gelesen; danach gilt der Stand in `state/token.enc.json`. Nach dem Erneuern von `ZUGANGSDATEN` den Workflow einmal von Hand mit „Zugangstoken neu aus den Secrets lesen“ starten.
 
 Das Protokoll enthält pro Lauf nur eine Statuszeile ohne Messwerte. `extend_export.py`, `vo2_attribution.py` und `canonical_data.py` stammen unverändert aus dem bisherigen Export.
