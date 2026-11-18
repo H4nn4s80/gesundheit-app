@@ -1,0 +1,84 @@
+name: Daten-Export
+
+# Holt alle 4 Stunden neue Werte von Garmin und Withings und aktualisiert das verschlüsselte Datenpaket.
+# Zeiten in UTC; in Italien entspricht das im Winter 00/04/08/12/16/20 Uhr, im Sommer eine Stunde später.
+on:
+  schedule:
+    - cron: '17 3,7,11,15,19,23 * * *'
+  workflow_dispatch:
+    inputs:
+      probelauf:
+        description: 'Probelauf: abrufen und prüfen, aber kein neues Datenpaket veröffentlichen'
+        type: boolean
+        default: false
+      neu_einrichten:
+        description: 'Zugangstoken neu aus den Secrets lesen (nach dem Erneuern von GARMIN_TOKENS oder WITHINGS_REFRESH_TOKEN)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daten-export
+  cancel-in-progress: false
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Einrichtung prüfen
+        id: bereit
+        env:
+          PW: ${{ secrets.HEALTH_APP_PASSWORD }}
+          SK: ${{ secrets.STATE_KEY }}
+        run: |
+          if [ -n "$PW" ] && [ -n "$SK" ]; then
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::Export noch nicht eingerichtet: die Secrets HEALTH_APP_PASSWORD und STATE_KEY fehlen."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.bereit.outputs.ok == 'true'
+
+      - uses: actions/setup-python@v5
+        if: steps.bereit.outputs.ok == 'true'
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: export/requirements.txt
+
+      - name: Abhängigkeiten installieren
+        if: steps.bereit.outputs.ok == 'true'
+        run: pip install --quiet -r export/requirements.txt
+
+      - name: Daten abrufen und einmischen
+        id: lauf
+        if: steps.bereit.outputs.ok == 'true'
+        env:
+          HEALTH_APP_PASSWORD: ${{ secrets.HEALTH_APP_PASSWORD }}
+          STATE_KEY: ${{ secrets.STATE_KEY }}
+          GARMIN_TOKENS: ${{ secrets.GARMIN_TOKENS }}
+          WITHINGS_CLIENT_ID: ${{ secrets.WITHINGS_CLIENT_ID }}
+          WITHINGS_CLIENT_SECRET: ${{ secrets.WITHINGS_CLIENT_SECRET }}
+          WITHINGS_REFRESH_TOKEN: ${{ secrets.WITHINGS_REFRESH_TOKEN }}
+          DRY_RUN: ${{ inputs.probelauf && '1' || '0' }}
+          BOOTSTRAP: ${{ inputs.neu_einrichten && '1' || '0' }}
+        run: python export/update.py
+
+      # Läuft auch nach einem Fehler: erneuerte Zugangstoken müssen gesichert werden, sonst sind sie verloren.
+      - name: Ergebnis speichern
+        if: always() && steps.bereit.outputs.ok == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          [ -f export/state/token.enc.json ] && git add export/state/token.enc.json
+          git add data.enc.json
+          if git diff --cached --quiet; then echo "Nichts zu speichern."; exit 0; fi
+          STAMP="$(TZ=Europe/Rome date '+%Y-%m-%d %H:%M')"
+          if git diff --cached --quiet -- data.enc.json; then MSG="Export-Lauf $STAMP (keine neuen Daten)"; else MSG="Daten-Update $STAMP"; fi
+          git commit --quiet -m "$MSG"
+          git push --quiet || { git pull --quiet --rebase && git push --quiet; }
