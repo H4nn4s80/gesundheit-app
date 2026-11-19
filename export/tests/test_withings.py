@@ -27,6 +27,11 @@ class WithingsTests(unittest.TestCase):
         self.assertNotIn('secret', str(report))
         self.assertEqual(result[2], 'old')
 
+    def test_auth_reason_is_allowlisted_not_raw(self):
+        result, calls = self.fetch([response(body={'status': 503, 'error': 'Invalid Params: invalid client id/secret secret-value'})])
+        self.assertEqual(result[1]['reason'], 'invalid_client_credentials')
+        self.assertNotIn('secret-value', str(result[1]))
+
     def test_http_retry_bounded(self):
         result, calls = self.fetch([response(503)] * 3)
         self.assertEqual((result[1]['status'], result[1]['http_status'], calls), ('http_error', 503, 3))

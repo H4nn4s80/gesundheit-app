@@ -132,6 +132,19 @@ def _withings_failure(report, response, body, auth=False):
     api = body.get('status')
     api = api if isinstance(api, int) and not isinstance(api, bool) else None
     report['http_status'] = http
+    if auth and isinstance(body.get('error'), str):
+        # Match fixed provider phrases only; never echo any portion of a response.
+        error = body['error'].lower()
+        known_reasons = (
+            ('invalid client id/secret', 'invalid_client_credentials'),
+            ('invalid refresh_token', 'invalid_refresh_token'),
+            ('invalid refresh token', 'invalid_refresh_token'),
+            ('expired refresh_token', 'expired_refresh_token'),
+            ('expired refresh token', 'expired_refresh_token'),
+            ('missing [refresh_token]', 'missing_refresh_token'),
+            ('invalid hmac signature', 'invalid_signature'),
+        )
+        report['reason'] = next((label for phrase, label in known_reasons if phrase in error), 'unclassified_auth_error')
     if api is not None:
         report['api_status'] = api
     if http in (403, 429) or api in (403, 429):
