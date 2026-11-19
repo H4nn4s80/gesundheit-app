@@ -23,3 +23,9 @@ Die Zugangstoken beider Anbieter erneuern sich bei der Nutzung. Ihr aktueller St
 Garmin- und Withings-Refresh-Token aus `ZUGANGSDATEN` werden nur beim ersten Lauf gelesen; danach gilt der Stand in `state/token.enc.json`. Nach dem Erneuern von `ZUGANGSDATEN` den Workflow einmal von Hand mit „Zugangstoken neu aus den Secrets lesen“ starten.
 
 Das Protokoll enthält pro Lauf nur eine Statuszeile ohne Messwerte. `extend_export.py`, `vo2_attribution.py` und `canonical_data.py` stammen unverändert aus dem bisherigen Export.
+
+## Withings-Fehlerdiagnose
+
+HTTP-Status und Withings-API-Status werden getrennt protokolliert. Ein API-Status `503` bei HTTP `200` ist nicht dasselbe wie HTTP `503`. Rohantworten, Token und Messwerte werden nie protokolliert. Explizite HTTP-Fehler 502/503/504 werden höchstens zweimal mit Pause wiederholt. Authentifizierungsfehler, Sperren (403/429) und Transport-Timeouts werden nicht automatisch wiederholt. Bei einem Timeout könnte ein Refresh-Token bereits rotiert sein.
+
+Tests ohne echte Zugangsdaten: `python -m unittest discover -s export/tests -v`.
