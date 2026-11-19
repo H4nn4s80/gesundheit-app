@@ -102,6 +102,53 @@ WITHINGS_API = 'https://wbsapi.withings.net'
 MEASTYPES = '1,6,76,77,88,11,91,155,167,170'
 
 
+def _withings_post(report, path, **kwargs):
+    """Retry explicit transient HTTP failures only; never retry API/auth errors.
+
+    Transport timeouts are not retried because a refresh token might already
+    have rotated without its response reaching us.
+    """
+    for attempt in range(3):
+        time.sleep(PAUSE if attempt == 0 else 5 * attempt)
+        report['requests'] += 1
+        response = requests.post(WITHINGS_API + path, timeout=30, **kwargs)
+        if response.status_code not in (502, 503, 504) or attempt == 2:
+            return response
+
+
+def _withings_body(response):
+    if response.status_code != 200:
+        return {}
+    try:
+        body = response.json()
+    except ValueError:
+        return {}
+    return body if isinstance(body, dict) else {}
+
+
+def _withings_failure(report, response, body, auth=False):
+    """Only fixed identifiers and numeric codes are safe for public logs."""
+    http = response.status_code
+    api = body.get('status')
+    api = api if isinstance(api, int) and not isinstance(api, bool) else None
+    report['http_status'] = http
+    if api is not None:
+        report['api_status'] = api
+    if http in (403, 429) or api in (403, 429):
+        report.update(status='blocked', blocked=http if http in (403, 429) else api)
+    elif http != 200:
+        report.update(status='http_error', code=http)
+    elif api is None:
+        report.update(status='invalid_response')
+    elif api != 0:
+        report.update(status='auth_error' if auth else 'api_error')
+        if api is not None:
+            report['code'] = api
+        # Do not include the provider's raw error, which may contain secrets.
+    else:
+        report.update(status='invalid_response')
+
+
 def fetch_withings(client_id, client_secret, refresh_token, end, days=7):
     """Gibt (Rohdaten, Bericht, neuer Refresh-Token) zurück. Der Refresh-Token wechselt bei jeder Nutzung."""
     report = {'status': 'error', 'requests': 0, 'errors': []}
@@ -109,16 +156,11 @@ def fetch_withings(client_id, client_secret, refresh_token, end, days=7):
     raw = {'measures_raw': {'status': 0, 'body': {'measuregrps': groups}}}
     new_refresh = refresh_token
     try:
-        time.sleep(PAUSE)
-        report['requests'] += 1
-        r = requests.post(WITHINGS_API + '/v2/oauth2', timeout=30, data={'action': 'requesttoken', 'grant_type': 'refresh_token',
+        r = _withings_post(report, '/v2/oauth2', data={'action': 'requesttoken', 'grant_type': 'refresh_token',
                           'client_id': client_id, 'client_secret': client_secret, 'refresh_token': refresh_token})
-        body = r.json() if r.status_code == 200 else {}
-        if r.status_code in (403, 429):
-            report.update(status='blocked', blocked=r.status_code)
-            return raw, report, new_refresh
-        if body.get('status') != 0 or not (body.get('body') or {}).get('access_token'):
-            report.update(status='auth_error', code=body.get('status', r.status_code))
+        body = _withings_body(r)
+        if r.status_code != 200 or body.get('status') != 0 or not (body.get('body') or {}).get('access_token'):
+            _withings_failure(report, r, body, auth=True)
             return raw, report, new_refresh
         access = body['body']['access_token']
         new_refresh = body['body'].get('refresh_token') or refresh_token
@@ -128,15 +170,10 @@ def fetch_withings(client_id, client_secret, refresh_token, end, days=7):
             params = {'action': 'getmeas', 'category': '1', 'meastypes': MEASTYPES, 'startdate': str(int(start.timestamp())), 'enddate': str(int(time.time()))}
             if offset:
                 params['offset'] = str(offset)
-            time.sleep(PAUSE)
-            report['requests'] += 1
-            r = requests.post(WITHINGS_API + '/measure', timeout=30, data=params, headers={'Authorization': 'Bearer ' + access})
-            j = r.json() if r.status_code == 200 else {}
-            if r.status_code in (403, 429) or j.get('status') in (403, 429):
-                report.update(status='blocked', blocked=r.status_code)
-                break
+            r = _withings_post(report, '/measure', data=params, headers={'Authorization': 'Bearer ' + access})
+            j = _withings_body(r)
             if r.status_code != 200 or j.get('status') != 0:
-                report.update(status='api_error', code=j.get('status', r.status_code))
+                _withings_failure(report, r, j)
                 break
             b = j.get('body') or {}
             groups += b.get('measuregrps', [])
