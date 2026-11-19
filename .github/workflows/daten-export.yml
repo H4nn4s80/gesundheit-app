@@ -11,6 +11,10 @@ on:
         description: 'Probelauf: abrufen und prüfen, aber kein neues Datenpaket veröffentlichen'
         type: boolean
         default: false
+      withings_erneuern:
+        description: 'Nur Withings: neuen WITHINGS_REFRESH_TOKEN aus Secret prüfen und übernehmen; Garmin nicht zurücksetzen'
+        type: boolean
+        default: false
       neu_einrichten:
         description: 'Zugangstoken neu aus den Secrets lesen (nach dem Erneuern des Secrets ZUGANGSDATEN)'
         type: boolean
@@ -67,6 +71,7 @@ jobs:
           WITHINGS_CLIENT_SECRET: ${{ secrets.WITHINGS_CLIENT_SECRET }}
           WITHINGS_REFRESH_TOKEN: ${{ secrets.WITHINGS_REFRESH_TOKEN }}
           DRY_RUN: ${{ inputs.probelauf && '1' || '0' }}
+          RENEW_WITHINGS: ${{ inputs.withings_erneuern && '1' || '0' }}
           BOOTSTRAP: ${{ inputs.neu_einrichten && '1' || '0' }}
         run: python export/update.py
 

@@ -29,3 +29,11 @@ Das Protokoll enthält pro Lauf nur eine Statuszeile ohne Messwerte. `extend_exp
 HTTP-Status und Withings-API-Status werden getrennt protokolliert. Ein API-Status `503` bei HTTP `200` ist nicht dasselbe wie HTTP `503`. Rohantworten, Token und Messwerte werden nie protokolliert. Explizite HTTP-Fehler 502/503/504 werden höchstens zweimal mit Pause wiederholt. Authentifizierungsfehler, Sperren (403/429) und Transport-Timeouts werden nicht automatisch wiederholt. Bei einem Timeout könnte ein Refresh-Token bereits rotiert sein.
 
 Tests ohne echte Zugangsdaten: `python -m unittest discover -s export/tests -v`.
+
+## Nur Withings erneut autorisieren
+
+Bei `invalid_refresh_token` muss dieselbe Withings-App erneut autorisiert werden. Einen frisch erteilten Refresh-Token ausschließlich als GitHub Actions Secret `WITHINGS_REFRESH_TOKEN` speichern, niemals in Workflow-Eingaben, Chat, Commit oder Log. Client-ID und Client-Secret müssen zur autorisierten App gehören.
+
+Danach `Daten-Export` auf `main` manuell mit `withings_erneuern: true` und `neu_einrichten: false` ausführen. Der bestehende verschlüsselte Garmin-Zustand bleibt erhalten; Garmin darf seine Token im normalen Abruf erneuern. Die Withings-Erneuerung setzt einen vorhandenen entschlüsselbaren Zustand und das dedizierte Secret voraus und lehnt gleichzeitiges vollständiges Bootstrap ab. Abgelehnte Ersatztoken überschreiben den bisherigen Zustand nicht. Nach erfolgreicher Token-Rotation wird der neue Token verschlüsselt gesichert.
+
+Diese Vorbereitung erstellt keine OAuth-Autorisierung und ersetzt keine Benutzerzustimmung bei Withings.

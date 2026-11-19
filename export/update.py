@@ -75,6 +75,12 @@ def main():
         before_hash, before = digest(data), counts(data)
         cred = credentials()
 
+        renew_withings = os.environ.get('RENEW_WITHINGS') == '1'
+        if renew_withings and (os.environ.get('BOOTSTRAP') == '1' or not STATE_PATH.exists()):
+            raise RuntimeError('withings_renewal_requires_existing_state_without_bootstrap')
+        if renew_withings and not os.environ.get('WITHINGS_REFRESH_TOKEN', '').strip():
+            raise RuntimeError('withings_renewal_requires_dedicated_secret')
+
         if STATE_PATH.exists() and os.environ.get('BOOTSTRAP') != '1':
             try:
                 state = crypto.open_state(json.loads(STATE_PATH.read_text()), state_key)
@@ -96,8 +102,12 @@ def main():
         else:
             info['providers']['garmin'] = {'status': 'no_token'}
         cid, secret = cred['cid'], cred['secret']
-        if state.get('withings_refresh') and cid and secret:
-            withings_raw, rep, state['withings_refresh'] = sources.fetch_withings(cid, secret, state['withings_refresh'], end)
+        candidate = cred['withings_refresh'] if renew_withings else state.get('withings_refresh')
+        if candidate and cid and secret:
+            withings_raw, rep, refreshed = sources.fetch_withings(cid, secret, candidate, end)
+            # A rejected replacement must not overwrite the existing token state.
+            if not renew_withings or refreshed != candidate or rep.get('status') == 'fetched':
+                state['withings_refresh'] = refreshed
             info['providers']['withings'] = rep
             # Sofort sichern: der alte Refresh-Token ist nach der Nutzung ungültig.
             write_json(STATE_PATH, crypto.seal_state(state, state_key))
