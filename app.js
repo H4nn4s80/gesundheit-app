@@ -1,6 +1,6 @@
 'use strict';
 (() => {
-const APP_VERSION = '2.7';
+const APP_VERSION = '2.8';
 // Im Test-Repo direkt das laufend aktualisierte Datenpaket der bisherigen App lesen
 const DATA_URL = location.pathname.startsWith('/gesundheit-neu/') ? '/gesundheit-app/data.enc.json' : 'data.enc.json';
 const PREVIEW = !!window.GESUNDHEIT_PREVIEW;
@@ -423,7 +423,15 @@ async function boot() {
   if (PREVIEW) { start(demo(), true); return; }
   // Aufräumen: gespeicherter PIN-Zugang der früheren App-Version wird nicht mehr gebraucht.
   try { indexedDB.deleteDatabase('gesundheit-zugang'); } catch {}
-  if ('serviceWorker' in navigator && /^https:$|^http:$/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(() => {});
+  if ('serviceWorker' in navigator && /^https:$|^http:$/.test(location.protocol)) {
+    // Neue Version: sobald der neue Service Worker übernimmt, einmal neu laden, damit alle Dateien zusammenpassen.
+    const hadController = !!navigator.serviceWorker.controller; let reloading = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => { if (hadController && !reloading) { reloading = true; location.reload(); } });
+    navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(reg => {
+      // Auf dem iPhone startet die installierte App oft nicht neu, sondern wird nur wieder angezeigt: dann nach Updates sehen.
+      document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') reg.update().catch(() => {}); });
+    }).catch(() => {});
+  }
   try {
     const rec = await idb('get');
     if (rec?.key) { const e = await loadEnvelope(); if (keyId(e) === rec.id) { const d = await decrypt(rec.key, e); sessionKey = rec.key; start(d, false); return; } await idb('delete'); }
