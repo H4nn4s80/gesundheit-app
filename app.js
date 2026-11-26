@@ -1,6 +1,6 @@
 'use strict';
 (() => {
-const APP_VERSION = '2.9';
+const APP_VERSION = '3.0';
 // Im Test-Repo direkt das laufend aktualisierte Datenpaket der bisherigen App lesen
 const DATA_URL = location.pathname.startsWith('/gesundheit-neu/') ? '/gesundheit-app/data.enc.json' : 'data.enc.json';
 const PREVIEW = !!window.GESUNDHEIT_PREVIEW;
