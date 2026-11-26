@@ -1,5 +1,5 @@
-/* Gesundheit 2.5: App-Dateien und das verschlüsselte Datenpaket offline verfügbar halten. */
-const CACHE = 'gesundheit-v2-5';
+/* Gesundheit 2.6: App-Dateien und das verschlüsselte Datenpaket offline verfügbar halten. */
+const CACHE = 'gesundheit-v2-6';
 const FILES = ['index.html', 'app.css', 'app.js', 'manifest.webmanifest', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png', 'data.enc.json'];
 const root = new URL('./', self.location.href);
 self.addEventListener('install', e => e.waitUntil((async () => {

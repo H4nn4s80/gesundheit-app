@@ -1,6 +1,6 @@
 'use strict';
 (() => {
-const APP_VERSION = '2.5';
+const APP_VERSION = '2.6';
 // Im Test-Repo direkt das laufend aktualisierte Datenpaket der bisherigen App lesen
 const DATA_URL = location.pathname.startsWith('/gesundheit-neu/') ? '/gesundheit-app/data.enc.json' : 'data.enc.json';
 const PREVIEW = !!window.GESUNDHEIT_PREVIEW;
@@ -147,6 +147,9 @@ function ring(cls, label, pct, value, sub, go) {
   const r = 34, c = 2 * Math.PI * r, p = Math.max(0, Math.min(1, pct || 0));
   return `<button class="ring ${cls}" data-go="${go}"><svg viewBox="0 0 84 84" aria-hidden="true"><circle class="track" cx="42" cy="42" r="${r}"/><defs><linearGradient id="rg-${go}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--c2)"/><stop offset="1" style="stop-color:var(--c)"/></linearGradient></defs><circle class="prog" style="stroke:url(#rg-${go})" cx="42" cy="42" r="${r}" stroke-dasharray="${(c * p).toFixed(1)} ${c.toFixed(1)}"/><text x="42" y="48" text-anchor="middle">${Math.round((pct || 0) * 100)}%</text></svg><span class="lbl">${esc(label)}</span><span class="val">${value}</span><span class="sub">${esc(sub)}</span></button>`;
 }
+const EXT = '<svg class="chev ext" viewBox="0 0 14 14" aria-hidden="true"><path d="M5 2H2v10h10V9M8 2h4v4M12 2L6.500 7.500"/></svg>';
+// Externer Dienst mit eigenem Login; die App gibt dorthin keine Daten und kein Passwort weiter.
+const garmlinkRow = () => `<a class="row c-violet" href="https://garmlink.ai/dashboard" target="_blank" rel="noopener noreferrer"><span class="glyph"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8.500 9.500h7M8.500 12.500h4"/></svg></span><span class="main"><span class="name">GarmLink</span><span class="meta">KI-Chat und Dashboard, öffnet mit deinem Login dort</span></span>${EXT}</a>`;
 const CHEV = '<svg class="chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6"/></svg>';
 function metricRow(m, days = 30) {
   const p = last(m);
@@ -177,6 +180,7 @@ function viewHeute() {
   }
   const a = DATA.activities[0];
   if (a) h += `<section class="sec"><div class="secHead"><h2>Letztes Training</h2></div><div class="list">${actRow(a, 0)}</div></section>`;
+  h += `<section class="sec"><div class="secHead"><h2>KI-Coach</h2></div><div class="list">${garmlinkRow()}</div></section>`;
   if (!rings.length && !rec.length) h += `<section class="sec"><div class="list">${DATA.metrics.slice(0, 8).map(m => metricRow(m)).join('')}</div></section>`;
   return h;
 }
@@ -295,6 +299,7 @@ function viewMehr() {
 <label for="goal-sleep">Schlaf in Stunden<input id="goal-sleep" type="number" inputmode="decimal" min="4" max="12" step="0.25" value="${g('sleep')}"></label>
 <label for="goal-intensityWeek">Intensitätsminuten pro Woche<input id="goal-intensityWeek" type="number" inputmode="numeric" min="30" max="1500" step="10" value="${g('intensityWeek')}"></label>
 </form></section>
+<section class="sec"><div class="secHead"><h2>Verknüpfungen</h2></div><div class="list">${garmlinkRow()}</div></section>
 <section class="sec"><div class="secHead"><h2>Daten</h2></div><div class="card stack">
 <p>${IS_DEMO ? 'Du siehst erfundene Beispieldaten.' : `Stand ${built && !isNaN(built) ? built.toLocaleString('de-DE', { dateStyle: 'long', timeStyle: 'short' }) : fmtDate(TODAY, { dateStyle: 'long' })}`}</p>
 <p class="note">${nf(DATA.metrics.length, 0, 0)} Kennzahlen, ${nf(DATA.activities.length, 0, 0)} Aktivitäten.</p>
