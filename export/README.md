@@ -1,6 +1,6 @@
 # Daten-Export
 
-Aktualisiert `data.enc.json` alle 4 Stunden über GitHub Actions (`.github/workflows/daten-export.yml`).
+Aktualisiert `data.enc.json` etwa alle 4 Stunden über GitHub Actions (stündlicher Start, Abruf nur wenn der letzte mindestens 3 h 40 min her ist; Zeitpunkt in `state/last_run.txt`) (`.github/workflows/daten-export.yml`).
 
 Ablauf eines Laufs (`update.py`):
 

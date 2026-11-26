@@ -1,10 +1,11 @@
 name: Daten-Export
 
-# Holt alle 4 Stunden neue Werte von Garmin und Withings und aktualisiert das verschlüsselte Datenpaket.
-# Zeiten in UTC; in Italien entspricht das im Winter 00/04/08/12/16/20 Uhr, im Sommer eine Stunde später.
+# Holt etwa alle 4 Stunden neue Werte von Garmin und Withings und aktualisiert das verschlüsselte Datenpaket.
+# GitHub lässt geplante Läufe oft ausfallen oder startet sie verspätet. Deshalb wird jede Stunde gestartet,
+# abgerufen wird aber nur, wenn der letzte Abruf (export/state/last_run.txt) mindestens 3 h 40 min her ist.
 on:
   schedule:
-    - cron: '17 3,7,11,15,19,23 * * *'
+    - cron: '23 * * * *'
   workflow_dispatch:
     inputs:
       probelauf:
@@ -48,20 +49,33 @@ jobs:
       - uses: actions/checkout@v4
         if: steps.bereit.outputs.ok == 'true'
 
-      - uses: actions/setup-python@v5
+      - name: Takt prüfen
+        id: takt
         if: steps.bereit.outputs.ok == 'true'
+        run: |
+          LAST="$(cat export/state/last_run.txt 2>/dev/null || echo 0)"
+          AGE=$(( $(date +%s) - LAST ))
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$AGE" -lt 13200 ]; then
+            echo "Letzter Abruf vor $((AGE / 60)) min, nächster ab 220 min. Übersprungen."
+            echo "los=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "los=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-python@v5
+        if: steps.takt.outputs.los == 'true'
         with:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: export/requirements.txt
 
       - name: Abhängigkeiten installieren
-        if: steps.bereit.outputs.ok == 'true'
+        if: steps.takt.outputs.los == 'true'
         run: pip install --quiet -r export/requirements.txt
 
       - name: Daten abrufen und einmischen
         id: lauf
-        if: steps.bereit.outputs.ok == 'true'
+        if: steps.takt.outputs.los == 'true'
         env:
           HEALTH_APP_PASSWORD: ${{ secrets.HEALTH_APP_PASSWORD }}
           STATE_KEY: ${{ secrets.STATE_KEY }}
@@ -77,8 +91,11 @@ jobs:
 
       # Läuft auch nach einem Fehler: erneuerte Zugangstoken müssen gesichert werden, sonst sind sie verloren.
       - name: Ergebnis speichern
-        if: always() && steps.bereit.outputs.ok == 'true'
+        if: always() && steps.takt.outputs.los == 'true'
         run: |
+          # Zeitpunkt des Abrufs merken, auch nach einem Fehler: sonst würde jede Stunde erneut abgerufen.
+          date +%s > export/state/last_run.txt
+          git add export/state/last_run.txt
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           [ -f export/state/token.enc.json ] && git add export/state/token.enc.json
