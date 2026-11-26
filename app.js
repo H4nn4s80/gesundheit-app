@@ -1,6 +1,6 @@
 'use strict';
 (() => {
-const APP_VERSION = '2.8';
+const APP_VERSION = '2.9';
 // Im Test-Repo direkt das laufend aktualisierte Datenpaket der bisherigen App lesen
 const DATA_URL = location.pathname.startsWith('/gesundheit-neu/') ? '/gesundheit-app/data.enc.json' : 'data.enc.json';
 const PREVIEW = !!window.GESUNDHEIT_PREVIEW;
@@ -422,6 +422,9 @@ $('#demoBtn').addEventListener('click', () => start(demo(), true));
 async function boot() {
   if (PREVIEW) { start(demo(), true); return; }
   // Aufräumen: gespeicherter PIN-Zugang der früheren App-Version wird nicht mehr gebraucht.
+  // Aufräumen: die beendete Testversion unter /gesundheit-neu/ (gleiche Adresse, eigener Service Worker) abmelden.
+  try { for (const r of await navigator.serviceWorker.getRegistrations()) if (new URL(r.scope).pathname.startsWith('/gesundheit-neu/')) await r.unregister(); } catch {}
+  try { for (const k of await caches.keys()) if (/^gesundheit-v2-[0-4]$/.test(k)) await caches.delete(k); } catch {}
   try { indexedDB.deleteDatabase('gesundheit-zugang'); } catch {}
   if ('serviceWorker' in navigator && /^https:$|^http:$/.test(location.protocol)) {
     // Neue Version: sobald der neue Service Worker übernimmt, einmal neu laden, damit alle Dateien zusammenpassen.
