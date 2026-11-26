@@ -15,7 +15,8 @@ const CLAUDE_MODEL = 'claude-opus-5-5';
 let ctx = null; // von der App gesetzt: { data, today, goals, demo }
 // turns: Gesprächsverlauf unabhängig vom Anbieter. Claude-Antworten behalten ihre Originalblöcke, damit sie unverändert zurückgehen.
 const st = { gen: 0, loaded: false, provider: 'claude', keys: { claude: null, openai: null }, openaiModel: null, openaiModels: null,
-  turns: [], view: [], system: null, busy: false, abort: null, live: null };
+  turns: [], view: [], system: null, busy: false, abort: null, live: null,
+  chatId: null, resumed: null, screen: 'chat', chats: [], demoChats: [], confirmAll: false };
 
 /* ---------- Einstellungen: nur auf diesem Gerät ---------- */
 function kv(action, key, value) {
@@ -38,10 +39,48 @@ async function load() {
     st.keys.openai = (await kv('get', KEYNAME.openai)) || null;
     st.openaiModel = (await kv('get', 'openaiModel')) || null;
     const p = await kv('get', 'provider'); if (PROVIDERS[p]) st.provider = p;
+    const c = await kv('get', 'chats'); if (Array.isArray(c)) st.chats = c;
   } catch {}
   st.loaded = true;
 }
 const save = (k, v) => kv('put', k, v).catch(() => {});
+
+/* ---------- Gesprächsverlauf: nur auf diesem Gerät, beim Abmelden gelöscht ----------
+   Im Beispielmodus (ohne Passwort erreichbar) werden keine Gespräche gespeichert und keine gespeicherten gezeigt. */
+const MAX_CHATS = 100;
+const chatList = () => ctx.demo() ? st.demoChats : st.chats;
+function persistChat() {
+  const view = st.view.filter(m => m.role !== 'error');
+  if (!view.some(m => m.role === 'assistant')) return;
+  st.chatId ||= Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const list = chatList(), old = list.find(c => c.id === st.chatId), now = new Date().toISOString();
+  const rec = { id: st.chatId, created: old?.created || now, updated: now, title: (view.find(m => m.role === 'user')?.text || 'Gespräch').slice(0, 90),
+    by: [...new Set(view.filter(m => m.by).map(m => m.by))], questions: view.filter(m => m.role === 'user').length,
+    view, turns: st.turns.map(t => ({ role: t.role, text: t.text, provider: t.provider })) };
+  const next = [rec, ...list.filter(c => c.id !== rec.id)].slice(0, MAX_CHATS);
+  if (ctx.demo()) st.demoChats = next; else { st.chats = next; save('chats', next); }
+}
+function openChat(id) {
+  const rec = chatList().find(c => c.id === id); if (!rec) return;
+  reset();
+  // Ohne Claude-Denkblöcke weiterführen: sie gelten nur zusammen mit den Daten, mit denen sie entstanden sind.
+  st.chatId = rec.id; st.resumed = rec.updated; st.turns = rec.turns.map(t => ({ ...t })); st.view = rec.view.map(m => ({ ...m }));
+  st.screen = 'chat';
+}
+function deleteChat(id) {
+  const next = chatList().filter(c => c.id !== id);
+  if (ctx.demo()) st.demoChats = next; else { st.chats = next; save('chats', next); }
+  if (st.chatId === id) st.chatId = null;
+}
+function deleteAll() {
+  if (ctx.demo()) st.demoChats = []; else { st.chats = []; kv('delete', 'chats').catch(() => {}); }
+  st.chatId = null;
+}
+function when(isoStr) {
+  const d = new Date(isoStr), t = d.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+  const day = x => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime(), diff = Math.round((day(new Date()) - day(d)) / 864e5);
+  return diff === 0 ? `Heute, ${t}` : diff === 1 ? `Gestern, ${t}` : d.toLocaleDateString('de-DE', { day: 'numeric', month: 'short', year: diff > 300 ? 'numeric' : undefined }) + `, ${t}`;
+}
 
 /* ---------- Werte für die KI aufbereiten ---------- */
 const DAYS = 60, ACT_DAYS = 120;
@@ -227,6 +266,7 @@ async function ask(question) {
   } else {
     st.turns.push({ role: 'assistant', text: out.text, provider, blocks: out.blocks });
     st.view.push({ role: 'assistant', text: out.text + (out.cut ? '\n\n(Antwort wurde wegen der Längenbegrenzung gekürzt.)' : ''), by });
+    persistChat();
   }
   st.busy = false; st.live = null; st.abort = null;
   paint(true);
@@ -260,14 +300,26 @@ function setupCard(p) {
 <form id="coachKeyForm" class="stack"><label class="sr" for="coachKey">API-Schlüssel</label><input class="field" id="coachKey" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${P.keyHint}" required><button class="primary" type="submit" id="coachKeySave">Schlüssel speichern</button><p class="msg" id="coachKeyMsg" role="status"></p></form>
 <p class="note">Der Schlüssel wird nur auf diesem Gerät gespeichert und beim Abmelden gelöscht.</p></section>`;
 }
+function historyHtml() {
+  const list = chatList();
+  let h = `<button class="back" id="coachBack"><svg viewBox="0 0 10 16" aria-hidden="true"><path d="M8 1L2 8l6 7"/></svg>Zum Chat</button>`;
+  h += `<section class="sec"><div class="secHead"><h2>Verlauf</h2><small>${list.length ? list.length + (list.length === 1 ? ' Gespräch' : ' Gespräche') : ''}</small></div>`;
+  if (!list.length) return h + `<p class="empty">${ctx.demo() ? 'Im Beispielmodus werden Gespräche nur bis zum Schließen der App gemerkt.' : 'Noch keine Gespräche. Jedes Gespräch erscheint hier, sobald die erste Antwort da ist.'}</p></section>`;
+  h += '<div class="list">' + list.map(c => `<div class="row histRow${c.id === st.chatId ? ' current' : ''}"><button class="main" data-coach-open="${esc(c.id)}"><span class="name">${esc(c.title)}</span><span class="meta">${esc(when(c.updated))} · ${esc(c.by.join(' und '))} · ${c.questions} ${c.questions === 1 ? 'Frage' : 'Fragen'}</span></button><button class="iconBtn del" data-coach-del="${esc(c.id)}" aria-label="Gespräch löschen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 7V4.500h4V7M6.500 7l1 12.500h9l1-12.500M10 11v5.500M14 11v5.500"/></svg></button></div>`).join('') + '</div></section>';
+  h += `<button class="btn danger" id="coachDelAll">${st.confirmAll ? 'Wirklich alle Gespräche löschen?' : 'Alle Gespräche löschen'}</button>`;
+  h += `<p class="note">${ctx.demo() ? 'Im Beispielmodus wird nichts gespeichert.' : `Gespräche werden nur auf diesem Gerät gespeichert, höchstens die letzten ${MAX_CHATS}, und beim Abmelden gelöscht.`}</p>`;
+  return h;
+}
 function html() {
   let h = '<header class="head"><h1>Coach</h1><p class="muted">Fragen zu Training, Schlaf und Erholung, beantwortet aus deinen Werten.</p></header>';
   if (!st.loaded) return h;
   const p = st.provider;
-  h += `<div class="seg" role="group" aria-label="KI wählen">${Object.entries(PROVIDERS).map(([k, P]) => `<button data-coach-provider="${k}" aria-pressed="${k === p}" ${st.busy ? 'disabled' : ''}>${P.label}</button>`).join('')}</div>`;
+  if (st.screen === 'history') return h + historyHtml();
+  h += `<div class="coachBar"><div class="seg" role="group" aria-label="KI wählen">${Object.entries(PROVIDERS).map(([k, P]) => `<button data-coach-provider="${k}" aria-pressed="${k === p}" ${st.busy ? 'disabled' : ''}>${P.label}</button>`).join('')}</div><button class="iconBtn" id="coachHist" aria-label="Verlauf" ${st.busy ? 'disabled' : ''}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.500 12a8.500 8.500 0 1 0 2.500-6"/><path d="M3 4v4h4M12 7.500V12l3 2"/></svg><span>Verlauf</span></button></div>`;
   if (!st.keys[p]) return h + setupCard(p);
   if (p === 'openai' && !st.openaiModel) return h + '<p class="note">Modelle werden geladen …</p>';
   h += '<section class="chat" id="coachLog" aria-live="polite">';
+  if (st.resumed) h += `<p class="note resumed">Gespeichertes Gespräch · ${esc(when(st.resumed))}<br>Wenn du weiterfragst, nutzt der Coach deine aktuellen Werte.</p>`;
   if (!st.view.length && st.live === null) h += `<div class="chips">${EXAMPLES.map(q => `<button class="chip" data-coach-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`;
   for (const m of st.view) h += m.role === 'user' ? `<div class="bubble me">${esc(m.text)}</div>` : m.role === 'error' ? `<div class="bubble err">${esc(m.text)}</div>` : `<div class="bubble ai"><span class="by">${esc(m.by)}</span>${md(m.text)}</div>`;
   if (st.live !== null) h += `<div class="bubble ai" id="coachLive">${st.live ? md(st.live) : '<span class="dots" aria-label="Der Coach denkt nach"><i></i><i></i><i></i></span>'}</div>`;
@@ -325,8 +377,14 @@ document.addEventListener('change', ev => {
   if (ev.target.id === 'coachModel') { st.openaiModel = ev.target.value; save('openaiModel', st.openaiModel); }
 });
 document.addEventListener('click', async ev => {
-  const t = ev.target.closest('[data-coach-q],[data-coach-provider],#coachNew,#coachStop,#coachKeyEdit'); if (!t) return;
+  const t = ev.target.closest('[data-coach-q],[data-coach-provider],[data-coach-open],[data-coach-del],#coachNew,#coachStop,#coachKeyEdit,#coachHist,#coachBack,#coachDelAll'); if (!t) return;
+  if (t.id !== 'coachDelAll') st.confirmAll = false;
   if (t.dataset.coachQ) ask(t.dataset.coachQ);
+  else if (t.id === 'coachHist' && !st.busy) { st.screen = 'history'; paint(true); window.scrollTo(0, 0); }
+  else if (t.id === 'coachBack') { st.screen = 'chat'; paint(true); }
+  else if (t.dataset.coachOpen) { openChat(t.dataset.coachOpen); paint(true); }
+  else if (t.dataset.coachDel) { deleteChat(t.dataset.coachDel); paint(true); }
+  else if (t.id === 'coachDelAll') { if (st.confirmAll) { deleteAll(); st.confirmAll = false; } else st.confirmAll = true; paint(true); }
   else if (t.dataset.coachProvider && !st.busy) { st.provider = t.dataset.coachProvider; save('provider', st.provider); paint(true); ensureModels(); }
   else if (t.id === 'coachStop') st.abort?.abort();
   else if (t.id === 'coachNew') { reset(); paint(true); }
@@ -342,8 +400,8 @@ document.addEventListener('input', ev => {
   if (ev.target.id === 'coachInput') { ev.target.style.height = 'auto'; ev.target.style.height = Math.min(ev.target.scrollHeight, 140) + 'px'; }
 });
 
-function reset() { st.gen++; st.abort?.abort(); st.turns = []; st.view = []; st.system = null; st.live = null; st.busy = false; }
-async function forget() { reset(); st.keys = { claude: null, openai: null }; st.openaiModel = null; st.openaiModels = null; st.loaded = false; try { await kv('clear'); } catch {} }
+function reset() { st.gen++; st.abort?.abort(); st.turns = []; st.view = []; st.system = null; st.live = null; st.busy = false; st.chatId = null; st.resumed = null; st.screen = 'chat'; }
+async function forget() { reset(); st.chats = []; st.demoChats = []; st.keys = { claude: null, openai: null }; st.openaiModel = null; st.openaiModels = null; st.loaded = false; try { await kv('clear'); } catch {} }
 
 return { init(c) { ctx = c; }, mount, reset, forget, view: () => '<div id="coachRoot" class="coach"></div>', _context: buildContext, _md: md };
 })();

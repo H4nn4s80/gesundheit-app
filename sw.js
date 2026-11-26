@@ -1,6 +1,6 @@
-/* Gesundheit 3.0: App-Dateien und das verschlüsselte Datenpaket offline verfügbar halten.
+/* Gesundheit 3.1: App-Dateien und das verschlüsselte Datenpaket offline verfügbar halten.
    Skript und Styles tragen die Version im Namen (?v=), damit nie Teile verschiedener Versionen zusammen laufen. */
-const VERSION = '3.0';
+const VERSION = '3.1';
 const CACHE = 'gesundheit-v' + VERSION.replace('.', '-');
 const ASSETS = ['app.css', 'coach.js', 'app.js'].map(f => f + '?v=' + VERSION);
 const FILES = ['index.html', ...ASSETS, 'manifest.webmanifest', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png', 'data.enc.json'];

@@ -1,6 +1,6 @@
 'use strict';
 (() => {
-const APP_VERSION = '3.0';
+const APP_VERSION = '3.1';
 // Im Test-Repo direkt das laufend aktualisierte Datenpaket der bisherigen App lesen
 const DATA_URL = location.pathname.startsWith('/gesundheit-neu/') ? '/gesundheit-app/data.enc.json' : 'data.enc.json';
 const PREVIEW = !!window.GESUNDHEIT_PREVIEW;
@@ -305,7 +305,7 @@ function viewMehr() {
 ${(DATA.notes || []).length ? `<details class="notes"><summary>Hinweise zu den Daten</summary><p class="note">${esc(DATA.notes.join(' '))}</p></details>` : ''}
 ${IS_DEMO ? '' : '<button class="btn" id="refreshBtn">Neue Daten laden</button>'}<p class="note" id="refreshMsg" role="status"></p></div></section>
 <section class="sec"><div class="secHead"><h2>Zugang</h2></div><div class="card stack">
-<p class="note">${IS_DEMO ? 'Im Beispielmodus wird nichts gespeichert oder geladen.' : 'Die Werte werden nur auf diesem Gerät entschlüsselt. Beim Abmelden wird der gespeicherte Schlüssel gelöscht.'}</p>
+<p class="note">${IS_DEMO ? 'Im Beispielmodus wird nichts gespeichert oder geladen.' : 'Die Werte werden nur auf diesem Gerät entschlüsselt. Beim Abmelden werden der gespeicherte Zugang, die KI-Schlüssel und der Coach-Verlauf gelöscht.'}</p>
 <button class="btn danger" id="logoutBtn">${IS_DEMO ? 'Beispielmodus beenden' : 'Abmelden und sperren'}</button></div></section>
 <p class="note">Gesundheit ${APP_VERSION}</p>`;
 }
