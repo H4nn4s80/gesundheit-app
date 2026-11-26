@@ -1,6 +1,6 @@
 'use strict';
 (() => {
-const APP_VERSION = '2.6';
+const APP_VERSION = '2.7';
 // Im Test-Repo direkt das laufend aktualisierte Datenpaket der bisherigen App lesen
 const DATA_URL = location.pathname.startsWith('/gesundheit-neu/') ? '/gesundheit-app/data.enc.json' : 'data.enc.json';
 const PREVIEW = !!window.GESUNDHEIT_PREVIEW;
@@ -180,7 +180,6 @@ function viewHeute() {
   }
   const a = DATA.activities[0];
   if (a) h += `<section class="sec"><div class="secHead"><h2>Letztes Training</h2></div><div class="list">${actRow(a, 0)}</div></section>`;
-  h += `<section class="sec"><div class="secHead"><h2>KI-Coach</h2></div><div class="list">${garmlinkRow()}</div></section>`;
   if (!rings.length && !rec.length) h += `<section class="sec"><div class="list">${DATA.metrics.slice(0, 8).map(m => metricRow(m)).join('')}</div></section>`;
   return h;
 }
@@ -312,7 +311,9 @@ ${IS_DEMO ? '' : '<button class="btn" id="refreshBtn">Neue Daten laden</button>'
 }
 
 /* ---------- Navigation ---------- */
-const TABS = { heute: viewHeute, trends: viewTrends, aktivitaeten: viewActs, koerper: viewBody, mehr: viewMehr };
+const Coach = window.GesundheitCoach;
+Coach.init({ data: () => DATA, today: () => TODAY, demo: () => IS_DEMO, goals: () => ({ steps: goalFor('steps'), sleep: goalFor('sleep'), intensityWeek: store.get('goal-intensityWeek', GOAL_DEFAULT.intensityWeek) }) });
+const TABS = { heute: viewHeute, trends: viewTrends, aktivitaeten: viewActs, koerper: viewBody, coach: Coach.view, mehr: viewMehr };
 let tab = 'heute'; const scrollPos = {};
 function route() {
   if (!DATA) return;
@@ -325,6 +326,7 @@ function route() {
   view.innerHTML = html;
   for (const a of document.querySelectorAll('.tabs a')) a.dataset.tab === tab ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current');
   window.scrollTo(0, isDetail ? 0 : (scrollPos[tab] || 0));
+  if (tab === 'coach' && !isDetail) Coach.mount();
   const reset = m => () => { const p = last(m); if (p && $('#selVal')) { $('#selVal').innerHTML = bigHTML(p.value, m.unit); $('#selDate').textContent = selLabel(p.date); } };
   const pick = m => (p, wk) => { $('#selVal').innerHTML = bigHTML(p.value, m.unit); $('#selDate').textContent = selLabel(p.date, wk); };
   if (mm && isDetail) { const m = DATA.metrics[+mm[1]]; bindScrub(m, pick(m), reset(m)); }
@@ -383,6 +385,7 @@ function idb(action, value) {
 }
 
 function start(data, demoMode) {
+  Coach.reset();
   DATA = prepare(data); IS_DEMO = !!demoMode;
   $('#lock').hidden = true; $('#app').hidden = false; $('#demoBar').hidden = !IS_DEMO;
   route();
@@ -391,6 +394,7 @@ function showLock(msg = '') {
   DATA = null; sessionKey = null; $('#app').hidden = true; $('#view').innerHTML = ''; $('#lock').hidden = false; $('#lockMsg').textContent = msg; $('#password').value = '';
 }
 async function logout() {
+  await Coach.forget();
   if (!IS_DEMO) { try { await idb('delete'); } catch {} }
   if (PREVIEW) { location.hash = 'heute'; return; }
   history.replaceState(null, '', location.pathname); showLock();

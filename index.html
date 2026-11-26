@@ -11,7 +11,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Gesundheit">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; worker-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://api.anthropic.com; object-src 'none'; base-uri 'self'; form-action 'none'; worker-src 'self'">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png">
@@ -42,10 +42,12 @@
     <a href="#trends" data-tab="trends"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l5-6 4 3 4-7 5 5"/><path d="M3 21h18"/></svg><span>Trends</span></a>
     <a href="#aktivitaeten" data-tab="aktivitaeten"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.500 2.500M9.500 2.500h5"/></svg><span>Aktivitäten</span></a>
     <a href="#koerper" data-tab="koerper"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.500" y="3.500" width="17" height="17" rx="4"/><path d="M8 9.500a5.500 5.500 0 0 1 8 0l-2.500 2.500h-3z"/></svg><span>Körper</span></a>
+    <a href="#coach" data-tab="coach"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4l1.800 4.700L17.500 10.500l-4.700 1.800L11 17l-1.800-4.700L4.500 10.500l4.700-1.800z"/><path d="M18.500 15.500l.700 1.800 1.800.700-1.800.700-.700 1.800-.700-1.800-1.800-.700 1.800-.700z"/></svg><span>Coach</span></a>
     <a href="#mehr" data-tab="mehr"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.600"/><circle cx="12" cy="12" r="1.600"/><circle cx="19" cy="12" r="1.600"/></svg><span>Mehr</span></a>
   </nav>
 </div>
 <!--/APP-->
+<script src="coach.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
