@@ -7,14 +7,14 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 const PROVIDERS = {
-  claude: { label: 'Claude', company: 'Anthropic', console: 'console.anthropic.com → API Keys', keyHint: 'sk-ant-…', keyTest: /^sk-ant-[\w-]{20,}$/, keyMsg: 'Das sieht nicht nach einem Anthropic-Schlüssel aus. Er beginnt mit „sk-ant-“.' },
-  openai: { label: 'ChatGPT', company: 'OpenAI', console: 'platform.openai.com → API keys', keyHint: 'sk-…', keyTest: /^sk-(?!ant-)[\w-]{20,}$/, keyMsg: 'Das sieht nicht nach einem OpenAI-Schlüssel aus. Er beginnt mit „sk-“.' }
+  openai: { label: 'ChatGPT', company: 'OpenAI', console: 'platform.openai.com → API keys', keyHint: 'sk-…', keyTest: /^sk-(?!ant-)[\w-]{20,}$/, keyMsg: 'Das sieht nicht nach einem OpenAI-Schlüssel aus. Er beginnt mit „sk-“.' },
+  claude: { label: 'Claude', company: 'Anthropic', console: 'console.anthropic.com → API Keys', keyHint: 'sk-ant-…', keyTest: /^sk-ant-[\w-]{20,}$/, keyMsg: 'Das sieht nicht nach einem Anthropic-Schlüssel aus. Er beginnt mit „sk-ant-“.' }
 };
 const CLAUDE_MODEL = 'claude-opus-5-5';
 
 let ctx = null; // von der App gesetzt: { data, today, goals, demo }
 // turns: Gesprächsverlauf unabhängig vom Anbieter. Claude-Antworten behalten ihre Originalblöcke, damit sie unverändert zurückgehen.
-const st = { gen: 0, loaded: false, provider: 'claude', keys: { claude: null, openai: null }, openaiModel: null, openaiModels: null,
+const st = { gen: 0, loaded: false, provider: 'openai', keys: { claude: null, openai: null }, openaiModel: null, openaiModels: null,
   turns: [], view: [], system: null, busy: false, abort: null, live: null,
   chatId: null, resumed: null, screen: 'chat', chats: [], demoChats: [], confirmAll: false };
 
