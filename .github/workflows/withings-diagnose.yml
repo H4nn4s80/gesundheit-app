@@ -1,0 +1,50 @@
+name: Withings-Diagnose
+
+# Prüft nur, ob Withings die gespeicherte Client-ID und das Client-Secret annimmt. Dafür wird ein absichtlich
+# ungültiger Refresh-Token geschickt: Der echte Zugang wird nicht benutzt und nicht verändert.
+# Das Protokoll enthält nur feste Kennungen, keine Zugangsdaten und keine Rohantworten.
+on:
+  workflow_dispatch:
+  push:
+    paths: ['.github/workflows/withings-diagnose.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet -r export/requirements.txt
+      - name: Withings-Zugang prüfen
+        env:
+          ZUGANGSDATEN: ${{ secrets.ZUGANGSDATEN }}
+          WITHINGS_CLIENT_ID: ${{ secrets.WITHINGS_CLIENT_ID }}
+          WITHINGS_CLIENT_SECRET: ${{ secrets.WITHINGS_CLIENT_SECRET }}
+          WITHINGS_REFRESH_TOKEN: ${{ secrets.WITHINGS_REFRESH_TOKEN }}
+        run: |
+          python - <<'PY'
+          import json, os, sys, requests
+          sys.path.insert(0, 'export')
+          from update import credentials
+          print('Einzel-Secret WITHINGS_CLIENT_ID gesetzt:', bool(os.environ.get('WITHINGS_CLIENT_ID', '').strip()))
+          print('Einzel-Secret WITHINGS_CLIENT_SECRET gesetzt:', bool(os.environ.get('WITHINGS_CLIENT_SECRET', '').strip()))
+          print('Einzel-Secret WITHINGS_REFRESH_TOKEN gesetzt:', bool(os.environ.get('WITHINGS_REFRESH_TOKEN', '').strip()))
+          print('ZUGANGSDATEN gesetzt:', bool(os.environ.get('ZUGANGSDATEN', '').strip()))
+          c = credentials()
+          print('Client-ID vorhanden:', bool(c['cid']), '| Länge', len(c['cid']), '| Secret vorhanden:', bool(c['secret']), '| Länge', len(c['secret']))
+          def probe(cid, secret):
+              r = requests.post('https://wbsapi.withings.net/v2/oauth2', timeout=30, data={'action': 'requesttoken', 'grant_type': 'refresh_token',
+                  'client_id': cid, 'client_secret': secret, 'refresh_token': '0' * 40})
+              j = r.json() if r.status_code == 200 else {}
+              e = str(j.get('error') or '').lower()
+              kind = 'client_abgelehnt' if 'client id/secret' in e else 'refresh_token_abgelehnt' if 'refresh' in e else 'andere_antwort'
+              return r.status_code, j.get('status'), kind
+          print('Gespeicherte Client-Daten:', probe(c['cid'], c['secret']))
+          print('Gegenprobe falsches Secret:', probe(c['cid'], 'f' * 64))
+          PY
